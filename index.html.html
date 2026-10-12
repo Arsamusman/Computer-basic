@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Basics Professional Certification Exam</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; user-select: none; }
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- TOP HEADER -->
+    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="bg-indigo-600 text-white p-2 rounded-lg font-bold text-lg">CB</div>
+            <div>
+                <h1 class="font-bold text-lg text-slate-100">Institute of Tech Excellence</h1>
+                <p class="text-xs text-slate-400">Computer Basics Professional Certification Exam (100 Marks)</p>
+            </div>
+        </div>
+        <div id="header-timer-box" class="hidden items-center space-x-4 bg-slate-900 px-4 py-2 rounded-lg border border-slate-700">
+            <span class="text-xs text-slate-400 uppercase font-semibold">Time Remaining:</span>
+            <span id="timer-display" class="text-xl font-mono font-bold text-red-400">100:00</span>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+
+        <!-- SCREEN 1: REGISTRATION & INSTRUCTIONS -->
+        <div id="welcome-screen" class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <span class="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Secure Online Exam</span>
+                <h2 class="text-3xl font-bold mt-3 text-white">Computer Basics Assessment</h2>
+                <p class="text-slate-400 text-sm mt-2">Total Questions: 100 | Passing Criteria: 70% (70 Marks) | Duration: 100 Minutes</p>
+            </div>
+
+            <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-6 mb-8">
+                <h3 class="font-semibold text-amber-400 mb-3 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    Strict Exam Rules & Anti-Cheating Protocol:
+                </h3>
+                <ul class="list-disc list-inside text-sm text-slate-300 space-y-2">
+                    <li><strong class="text-emerald-400">Randomized Exam:</strong> Question order and answer choices are unique for every candidate.</li>
+                    <li>Exam will attempt to enter <strong class="text-white">Full Screen mode</strong> automatically.</li>
+                    <li><strong class="text-red-400">Switching tabs, minimizing window, or leaving screen</strong> will trigger security warnings. After 3 warnings, test will auto-submit.</li>
+                    <li>Right-click and text selection are strictly disabled.</li>
+                    <li>Total duration is 100 minutes for 100 questions (Passing criteria: 70%).</li>
+                </ul>
+            </div>
+
+            <form id="registration-form" onsubmit="startExam(event)" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Enter Your Full Name:</label>
+                    <input type="text" id="student-name" required placeholder="e.g. Ali Ahmed" 
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <button type="submit" id="start-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-lg shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                    <span>Start Exam Now</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- SCREEN 2: EXAM INTERFACE -->
+        <div id="exam-screen" class="hidden space-y-6">
+            <div class="flex flex-wrap justify-between items-center bg-slate-800 border border-slate-700 px-6 py-4 rounded-xl gap-4">
+                <div>
+                    <span class="text-xs text-slate-400 block">Candidate</span>
+                    <span id="display-student-name" class="font-bold text-white text-lg">---</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="text-center">
+                        <span class="text-xs text-slate-400 block">Progress</span>
+                        <span id="question-progress" class="font-bold text-indigo-400">1 / 100</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-xl relative">
+                <div class="flex justify-between items-start mb-6">
+                    <span id="question-badge" class="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full">Category</span>
+                    <button onclick="toggleHint()" class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                        Show Hint
+                    </button>
+                </div>
+
+                <div id="hint-box" class="hidden mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 text-sm">
+                    <strong>Hint:</strong> <span id="hint-text">---</span>
+                </div>
+
+                <h3 id="question-title" class="text-xl font-semibold text-white mb-6 leading-relaxed">Question text...</h3>
+
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-6 py-3 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <div class="flex space-x-3">
+                    <button onclick="nextQuestion()" id="next-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition">
+                        Next
+                    </button>
+                    <button onclick="confirmSubmit()" id="submit-btn" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-semibold transition shadow-lg">
+                        Submit Exam
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigator Grid -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+                <p class="text-xs text-slate-400 mb-3 font-medium">Question Navigator:</p>
+                <div id="question-grid" class="grid grid-cols-10 gap-2 max-h-40 overflow-y-auto p-1"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: RESULT SCREEN -->
+        <div id="result-screen" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-8 text-center shadow-2xl">
+            <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 text-3xl">🏆</div>
+            <h2 id="result-heading" class="text-3xl font-bold text-white mb-2">Exam Completed</h2>
+            <p id="result-subtext" class="text-slate-400 text-sm mb-8">Here is your performance summary.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
+                    <span class="text-xs text-slate-400 block">Total Marks</span>
+                    <span class="text-2xl font-bold text-white">100</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
+                    <span class="text-xs text-slate-400 block">Your Score</span>
+                    <span id="score-display" class="text-2xl font-bold text-indigo-400">0</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
+                    <span class="text-xs text-slate-400 block">Percentage</span>
+                    <span id="percentage-display" class="text-2xl font-bold text-amber-400">0%</span>
+                </div>
+            </div>
+
+            <div id="pass-fail-badge" class="inline-block px-6 py-2 rounded-full font-bold text-lg mb-8">
+                Status: ---
+            </div>
+
+            <div>
+                <button onclick="location.reload()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition">
+                    Retake Exam
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800">
+        Institute of Tech Excellence &copy; 2026. All rights reserved. Secure Examination Portal.
+    </footer>
+
+    <script>
+        const rawQuestions = [
+            { q: "What is a computer?", options: ["An electronic device that manipulates information or data", "A mechanical engine used solely for printing documents", "A device that only connects to the internet", "A calculator with a screen"], correct: 0, hint: "It processes raw data into information.", category: "Computer Basics" },
+            { q: "Which component is considered the 'brain' of the computer?", options: ["RAM", "Hard Drive", "CPU", "Graphics Card"], correct: 2, hint: "Central Processing Unit.", category: "Computer Basics" },
+            { q: "What does 'IP' stand for in networking?", options: ["Internal Program", "Internet Protocol", "Information Provider", "Interconnected Port"], correct: 1, hint: "Protocol for network addressing.", category: "IP & Networking" },
+            { q: "Which component stores data permanently even when computer is powered off?", options: ["RAM", "Cache Memory", "Hard Drive / SSD", "Registers"], correct: 2, hint: "Non-volatile storage.", category: "Internal Parts" },
+            { q: "What is the primary function of RAM?", options: ["To store permanent backups", "To temporarily hold active data for CPU", "To cool the processor", "To connect to Wi-Fi"], correct: 1, hint: "Volatile fast memory.", category: "RAM" },
+            { q: "What does a Graphics Card (GPU) primarily do?", options: ["Manages audio", "Accelerates rendering of 2D/3D graphics and video", "Powers PC", "Increases internet speed"], correct: 1, hint: "Handles pixels and 3D rendering.", category: "Graphics Card" },
+            { q: "What is an Optical Drive used for?", options: ["Reading/writing CDs, DVDs, or Blu-ray discs with lasers", "Cooling cables", "Screen brightness", "Scanning paper"], correct: 0, hint: "Laser disc reader.", category: "Optical Drive" },
+            { q: "What is a VPN?", options: ["Virtual Private Network for secure/encrypted internet connection", "Visual Pixel Network", "Virus Protection Node", "Voice Processing Node"], correct: 0, hint: "Encrypts internet traffic.", category: "VPN & Proxy" },
+            { q: "What is a Proxy Server?", options: ["An intermediary server between client and internet", "A physical backup generator", "Motherboard chipset", "Mouse accessory"], correct: 0, hint: "Gateway server.", category: "VPN & Proxy" },
+            { q: "Which of these is an example of an Operating System?", options: ["Microsoft Word", "Windows 11", "Google Chrome", "Adobe Photoshop"], correct: 1, hint: "System software managing hardware.", category: "Computer Basics" },
+
+            { q: "Which of the following is an input device?", options: ["Monitor", "Printer", "Keyboard", "Speaker"], correct: 2, hint: "Used for typing.", category: "External Parts" },
+            { q: "Which device outputs visual information from the computer?", options: ["Mouse", "Monitor", "Microphone", "Scanner"], correct: 1, hint: "Display screen.", category: "External Parts" },
+            { q: "What is the main purpose of a UPS?", options: ["To provide backup power during sudden outages", "To boost internet speed", "To overclock processor", "To print documents"], correct: 0, hint: "Uninterruptible Power Supply.", category: "External Parts" },
+            { q: "Which device digitizes physical paper documents into files?", options: ["Printer", "Scanner", "Projector", "Speaker"], correct: 1, hint: "Scans images into PC.", category: "External Parts" },
+            { q: "Which cable carries both high-definition video and audio?", options: ["VGA", "HDMI", "PS/2", "Parallel"], correct: 1, hint: "High-Definition Multimedia Interface.", category: "External Parts" },
+            { q: "What type of device is a Computer Mouse?", options: ["Input device", "Output device", "Storage device", "Processing device"], correct: 0, hint: "Pointing device.", category: "External Parts" },
+            { q: "Which audio device captures user speech into the PC?", options: ["Headphones", "Microphone", "Speaker", "Sound Card"], correct: 1, hint: "Audio input.", category: "External Parts" },
+            { q: "What does a Projector do?", options: ["Projects screen display onto large screen or wall", "Prints 3D models", "Scans barcodes", "Cools room"], correct: 0, hint: "Big screen projection.", category: "External Parts" },
+            { q: "Which device plays sound out loud from computer?", options: ["Microphone", "Speakers", "Webcam", "Keyboard"], correct: 1, hint: "Audio output.", category: "External Parts" },
+            { q: "What is a Webcam primarily used for?", options: ["Video calls and video capture", "Reading text", "Backups", "Speed test"], correct: 0, hint: "Camera device.", category: "External Parts" },
+            { q: "Which device is used for gaming controls besides keyboard/mouse?", options: ["Gamepad / Joystick", "External HDD", "UPS", "Ethernet Cable"], correct: 0, hint: "Handheld controller.", category: "External Parts" },
+            { q: "What is a Barcode Scanner?", options: ["Input device reading printed barcode lines", "Receipt printer", "Drive", "Power regulator"], correct: 0, hint: "Scans retail code lines.", category: "External Parts" },
+            { q: "Which cable connects PC to wired Local Area Network (LAN)?", options: ["VGA", "Ethernet (RJ45)", "Power Cable", "USB-C"], correct: 1, hint: "Network cable.", category: "External Parts" },
+            { q: "What is a Stylus Pen used with?", options: ["Touchscreens and drawing tablets", "Keyboards", "Hard drives", "Power supplies"], correct: 0, hint: "Digital drawing pen.", category: "External Parts" },
+            { q: "Which peripheral combines printing, scanning, and copying?", options: ["All-in-One Multi-function Printer", "Graphics Tablet", "External GPU", "Network Switch"], correct: 0, hint: "Multi-function printer.", category: "External Parts" },
+
+            { q: "What is the Motherboard?", options: ["The main circuit board connecting all internal parts", "Computer casing", "Software driver", "UPS unit"], correct: 0, hint: "Central circuit board.", category: "Internal Parts" },
+            { q: "What does SMPS stand for?", options: ["Switched-Mode Power Supply", "System Memory Speed", "Secure Multimedia System", "Synchronous Motherboard Slot"], correct: 0, hint: "Power supply unit.", category: "Internal Parts" },
+            { q: "What is the purpose of a CPU Heatsink/Cooler?", options: ["To dissipate heat generated by CPU", "To speed up internet", "To increase RAM", "To clean dust"], correct: 0, hint: "Keeps CPU cool.", category: "Internal Parts" },
+            { q: "What is NVMe SSD?", options: ["High-speed solid state drive via PCIe bus", "Optical disc type", "Battery", "Network card"], correct: 0, hint: "Ultra-fast modern storage.", category: "Internal Parts" },
+            { q: "What is the CMOS battery used for on motherboard?", options: ["Maintains time/date and BIOS settings when off", "Powers CPU during games", "Charges mouse", "Cools GPU"], correct: 0, hint: "Coin battery for BIOS clock.", category: "Internal Parts" },
+            { q: "What is a Sound Card responsible for?", options: ["Processing audio input and output", "Rendering 3D frames", "Managing Bluetooth", "Encrypting files"], correct: 0, hint: "Audio processor.", category: "Internal Parts" },
+            { q: "What is Thermal Paste used for?", options: ["Improves heat transfer between CPU and heatsink", "Glues chips", "Insulates wires", "Cleans disk"], correct: 0, hint: "Applied between CPU and cooler.", category: "Internal Parts" },
+            { q: "What does BIOS stand for?", options: ["Basic Input/Output System", "Binary Integrated Operating Software", "Basic Internet Service", "Built-in Optical Storage"], correct: 0, hint: "Firmware initializing hardware.", category: "Internal Parts" },
+            { q: "What component is inside a traditional Hard Disk Drive (HDD)?", options: ["Spinning magnetic platters and read/write heads", "Flash memory chips", "Laser diodes", "Fans"], correct: 0, hint: "Spinning magnetic disk.", category: "Internal Parts" },
+            { q: "Which slot is used for modern Graphics Cards on motherboard?", options: ["PCI Express (PCIe)", "ISA Slot", "AGP Slot", "PCI Slot"], correct: 0, hint: "High-speed expansion slot.", category: "Internal Parts" },
+            { q: "What is a System Fan responsible for?", options: ["Maintaining airflow inside PC case", "Generating Wi-Fi", "Reading discs", "Overclocking"], correct: 0, hint: "Airflow management.", category: "Internal Parts" },
+            { q: "What is ECC RAM?", options: ["Error-Correcting Code RAM for server data protection", "Gaming RAM", "Enhanced Cache RAM", "External Card RAM"], correct: 0, hint: "Detects and corrects memory corruption.", category: "Internal Parts" },
+            { q: "What is a Network Interface Card (NIC)?", options: ["Hardware connecting computer to network", "Audio playing card", "Graphics card", "Storage card"], correct: 0, hint: "Ethernet/Wi-Fi adapter.", category: "Internal Parts" },
+            { q: "What is primary difference between HDD and SSD?", options: ["SSD uses flash memory with no moving parts; HDD uses spinning disks", "HDD is faster", "SSD is for audio only", "HDD has no moving parts"], correct: 0, hint: "Solid state vs mechanical.", category: "Internal Parts" },
+            { q: "What is UEFI?", options: ["Unified Extensible Firmware Interface (successor to BIOS)", "Universal Ethernet Interchange", "User Environment Integration", "Ultra Execution Interface"], correct: 0, hint: "Modern BIOS replacement.", category: "Internal Parts" },
+
+            { q: "Which memory type is faster: RAM or Hard Drive?", options: ["RAM", "Hard Drive", "Both equal", "Depends on color"], correct: 0, hint: "RAM has microsecond speeds.", category: "RAM" },
+            { q: "What does DDR stand for in RAM?", options: ["Double Data Rate", "Digital Data Register", "Dynamic Dual Resolution", "Direct Data Routing"], correct: 0, hint: "Transfers data twice per clock cycle.", category: "RAM" },
+            { q: "What happens if PC runs out of RAM?", options: ["System slows down and uses pagefile (virtual memory)", "PC explodes", "Deletes files", "Internet speeds up"], correct: 0, hint: "Uses hard disk space as virtual RAM.", category: "RAM" },
+            { q: "What is VRAM?", options: ["Video RAM dedicated to graphics processing", "Virtual RAM on hard disk", "Voice RAM", "Variable Access Memory"], correct: 0, hint: "Memory on GPU.", category: "Graphics Card" },
+            { q: "Which factor besides size determines RAM performance?", options: ["Clock speed (MHz) and latency", "Color", "Logo", "Weight"], correct: 0, hint: "MHz / MT/s speed.", category: "RAM" },
+            { q: "What is Integrated Graphics?", options: ["GPU built into the CPU die sharing system RAM", "Dedicated PCIe graphics card", "USB GPU", "Cloud GPU"], correct: 0, hint: "Built into CPU.", category: "Graphics Card" },
+            { q: "What is desktop RAM slot called?", options: ["DIMM slot", "PCI slot", "SATA port", "M.2 slot"], correct: 0, hint: "Dual In-line Memory Module.", category: "RAM" },
+            { q: "What is Ray Tracing in GPUs?", options: ["Simulating physical light rays for realistic reflections/shadows", "Tracing internet cables", "Measuring refresh rate", "Antivirus scan"], correct: 0, hint: "Realistic lighting simulation.", category: "Graphics Card" },
+            { q: "Can you mix different RAM speeds?", options: ["Yes, but all sticks run at speed of slowest stick", "No, damages motherboard", "Only if same color", "Impossible"], correct: 0, hint: "Runs at lowest common speed.", category: "RAM" },
+            { q: "What are CUDA cores or Stream Processors?", options: ["Parallel processing cores inside GPU", "Fans on GPU", "Power pins", "Display outputs"], correct: 0, hint: "GPU rendering cores.", category: "Graphics Card" },
+
+            { q: "Max storage capacity of a single-layer standard DVD?", options: ["4.7 GB", "700 MB", "25 GB", "50 GB"], correct: 0, hint: "Standard DVD size.", category: "Optical Drive" },
+            { q: "Storage capacity of a standard CD-ROM?", options: ["700 MB", "4.7 GB", "1.44 MB", "10 GB"], correct: 0, hint: "Standard CD size.", category: "Optical Drive" },
+            { q: "What laser does Blu-ray use?", options: ["Blue-violet laser", "Red laser", "Infrared", "Magnetic"], correct: 0, hint: "Short wavelength blue light.", category: "Optical Drive" },
+            { q: "What is a BD-RE disc?", options: ["Blu-ray Disc Recordable & Erasable (Rewritable)", "Blu-ray Read Engine", "Basic Digital Element", "Regional Encoder"], correct: 0, hint: "Rewritable Blu-ray.", category: "Optical Drive" },
+            { q: "Why are optical drives rare in modern laptops?", options: ["Cloud storage, USB drives, and thin laptops", "Government ban", "Too much power needed", "Discs illegal"], correct: 0, hint: "Replaced by USB and cloud.", category: "Optical Drive" },
+            { q: "What is an external USB optical drive?", options: ["Portable disc drive plugging into USB port", "Built-in motherboard drive", "GPU accessory", "Router part"], correct: 0, hint: "External pluggable drive.", category: "Optical Drive" },
+            { q: "What does 'CD-R' stand for?", options: ["Compact Disc-Recordable", "Compact Disc-Read", "Computer Disk-Register", "Core Data Restore"], correct: 0, hint: "Write-once CD.", category: "Optical Drive" },
+            { q: "Capacity of single-layer Blu-ray disc?", options: ["25 GB", "4.7 GB", "700 MB", "100 GB"], correct: 0, hint: "HD video capacity.", category: "Optical Drive" },
+            { q: "What is DVD-RW?", options: ["Digital Versatile Disc Rewritable", "Digital Video Read Write", "Dynamic Virtual Register", "Data Volume Restorer"], correct: 0, hint: "Rewritable DVD.", category: "Optical Drive" },
+            { q: "What media replaced floppy disks before USB drives?", options: ["CDs and DVDs", "Punch cards", "Magnetic tape", "Never replaced"], correct: 0, hint: "Optical discs.", category: "Optical Drive" },
+
+            { q: "Shortcut key to Copy selected text?", options: ["Ctrl + C", "Ctrl + V", "Ctrl + X", "Ctrl + P"], correct: 0, hint: "C = Copy.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + V' do?", options: ["Paste", "Cut", "Copy", "Print"], correct: 0, hint: "Pastes content.", category: "Shortcut Keys" },
+            { q: "Direct shortcut key to open Task Manager in Windows?", options: ["Ctrl + Shift + Esc", "Ctrl + Alt + Del", "Alt + F4", "Win + D"], correct: 0, hint: "Opens Task Manager directly.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + Z' do?", options: ["Undo last action", "Redo action", "Zoom in", "Save"], correct: 0, hint: "Undo.", category: "Shortcut Keys" },
+            { q: "Shortcut to select all items?", options: ["Ctrl + A", "Ctrl + S", "Ctrl + F", "Ctrl + N"], correct: 0, hint: "A = All.", category: "Shortcut Keys" },
+            { q: "What does 'Alt + F4' do?", options: ["Closes active window/program", "Opens search", "Minimizes windows", "Restarts PC"], correct: 0, hint: "Closes app.", category: "Shortcut Keys" },
+            { q: "Function of 'Windows Key + D'?", options: ["Show/Hide Desktop", "Settings", "Lock PC", "File Explorer"], correct: 0, hint: "D = Desktop.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + P' do?", options: ["Print document", "Paste", "Open project", "Properties"], correct: 0, hint: "P = Print.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + F' do?", options: ["Find / Search text", "Format text", "File menu", "Refresh"], correct: 0, hint: "F = Find.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + S' do?", options: ["Save file", "Search", "Select all", "Switch"], correct: 0, hint: "S = Save.", category: "Shortcut Keys" },
+            { q: "Shortcut to open File Explorer in Windows?", options: ["Windows Key + E", "Windows Key + I", "Windows Key + R", "Windows Key + L"], correct: 0, hint: "E = Explorer.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + X' do?", options: ["Cut selected item", "Copy", "Close tab", "Delete"], correct: 0, hint: "Cut operation.", category: "Shortcut Keys" },
+            { q: "Shortcut to switch between open applications?", options: ["Alt + Tab", "Ctrl + Tab", "Win + Tab", "Ctrl + Shift"], correct: 0, hint: "Alt + Tab switcher.", category: "Shortcut Keys" },
+            { q: "What does 'F2' key do on selected file?", options: ["Rename file", "Delete file", "Refresh", "Help"], correct: 0, hint: "Quick rename.", category: "Shortcut Keys" },
+            { q: "What does 'Ctrl + Shift + N' do in File Explorer?", options: ["Create new folder", "Open document", "Print preview", "Close"], correct: 0, hint: "New Folder shortcut.", category: "Shortcut Keys" },
+
+            { q: "IPv4 address format example?", options: ["192.168.1.1 (Four dot-separated numbers)", "Hexadecimal string with colons", "10-digit number", "google.com"], correct: 0, hint: "4 octets.", category: "IP & Networking" },
+            { q: "What is IPv6 address format?", options: ["128-bit hexadecimal address separated by colons", "32-bit address", "Wi-Fi password", "Printer ID"], correct: 0, hint: "128-bit hex address.", category: "IP & Networking" },
+            { q: "What is Static IP address?", options: ["Permanent IP manually configured", "IP changing every connection", "Printer-only IP", "Guest IP"], correct: 0, hint: "Fixed non-changing IP.", category: "IP & Networking" },
+            { q: "What is Dynamic IP address?", options: ["IP assigned automatically by DHCP that can change", "Government IP", "VPN IP", "Static server IP"], correct: 0, hint: "Assigned dynamically by DHCP.", category: "IP & Networking" },
+            { q: "What is Public IP address?", options: ["ISP assigned IP visible to public internet", "Local smart bulb IP", "Router password", "127.0.0.1"], correct: 0, hint: "Global internet address.", category: "IP & Networking" },
+            { q: "What is Private IP address?", options: ["IP used within local home/office network (e.g. 192.168.x.x)", "VPN hidden IP", "Government IP", "Blocked IP"], correct: 0, hint: "LAN address.", category: "IP & Networking" },
+            { q: "What does DHCP stand for?", options: ["Dynamic Host Configuration Protocol", "Data Hardware Connection Port", "Digital Home Control", "Domain Host Client"], correct: 0, hint: "Auto IP assigner.", category: "IP & Networking" },
+            { q: "What is loopback IP address (localhost)?", options: ["127.0.0.1", "192.168.0.1", "8.8.8.8", "10.0.0.1"], correct: 0, hint: "Localhost address.", category: "IP & Networking" },
+            { q: "What is Subnet Mask used for?", options: ["Divides IP address into network and host portions", "Hides IP", "Encrypts Wi-Fi", "Speeds downloads"], correct: 0, hint: "Network vs Host split.", category: "IP & Networking" },
+            { q: "Organization managing global IP address allocation?", options: ["IANA / ICANN", "Microsoft", "IEEE", "Cisco"], correct: 0, hint: "Global domain and IP authority.", category: "IP & Networking" },
+
+            { q: "How does VPN protect privacy on public Wi-Fi?", options: ["Encrypts all traffic between device and VPN server", "Turns off Wi-Fi", "Changes laptop password", "Blocks all sites"], correct: 0, hint: "Encrypted tunnel.", category: "VPN & Proxy" },
+            { q: "Difference between VPN and Proxy?", options: ["VPN encrypts all system traffic; Proxy redirects app-specific traffic without system encryption", "Proxy is always safer", "VPN only for mobile", "No difference"], correct: 0, hint: "System encryption vs app proxy.", category: "VPN & Proxy" },
+            { q: "Can VPN hide browsing activity from your ISP?", options: ["Yes, ISP only sees encrypted traffic to VPN server", "No, ISP sees everything", "Only wired connection", "Only at night"], correct: 0, hint: "Traffic is encrypted.", category: "VPN & Proxy" },
+            { q: "What is a Forward Proxy?", options: ["Proxy sitting between client and internet to forward requests", "Server protecting web servers", "Firewall", "Antivirus"], correct: 0, hint: "Client-side proxy.", category: "VPN & Proxy" },
+            { q: "What is a Reverse Proxy?", options: ["Proxy standing in front of web servers to balance incoming traffic", "IP reverser", "Backup tunnel", "Email proxy"], correct: 0, hint: "Server-side proxy.", category: "VPN & Proxy" },
+            { q: "Why use free public proxies with caution?", options: ["They may log data, inject ads, or leak information", "Destroys hardware", "Speeds up internet", "Illegal"], correct: 0, hint: "Privacy risks.", category: "VPN & Proxy" },
+            { q: "What is 'Kill Switch' in VPN software?", options: ["Blocks internet if VPN connection drops to prevent IP leak", "Turns off PC", "Removes viruses", "Reboots router"], correct: 0, hint: "Prevents data leaks.", category: "VPN & Proxy" },
+
+            { q: "In Windows Settings, what does 'System' category manage?", options: ["Display, sound, notifications, power, storage", "Bluetooth devices", "User passwords", "Date & time"], correct: 0, hint: "Core system settings.", category: "Windows Settings" },
+            { q: "Which Windows Settings category manages Bluetooth & printers?", options: ["Devices / Bluetooth & devices", "Network & internet", "Gaming", "Personalization"], correct: 0, hint: "Peripheral hardware.", category: "Windows Settings" },
+            { q: "What is configured under 'Network & internet' in Windows Settings?", options: ["Wi-Fi, Ethernet, VPN, Proxy", "Wallpapers", "Apps uninstall", "Windows Update"], correct: 0, hint: "Connectivity settings.", category: "Windows Settings" },
+            { q: "Where in Windows Settings can you change desktop wallpaper and themes?", options: ["Personalization", "Apps", "Accounts", "System"], correct: 0, hint: "Visual theme and wallpapers.", category: "Windows Settings" },
+            { q: "What is managed under 'Apps' category in Windows Settings?", options: ["Uninstall programs, default apps, optional features", "Graphics drivers", "Browsers", "Controllers"], correct: 0, hint: "Application management.", category: "Windows Settings" },
+            { q: "What can you configure under 'Accounts' in Windows Settings?", options: ["Microsoft account, PIN, passwords, sign-in options", "Bank details", "Wi-Fi login", "Email client"], correct: 0, hint: "User profile & sign-in.", category: "Windows Settings" },
+            { q: "Where do you adjust date, time zone, and language regions in Windows?", options: ["Time & language", "Gaming", "System", "Personalization"], correct: 0, hint: "Clocks and languages.", category: "Windows Settings" },
+            { q: "What features are found under 'Gaming' category in Windows Settings?", options: ["Xbox Game Bar, Game Mode, captures", "Game downloads", "Joystick repair", "Resolution"], correct: 0, hint: "Game Mode & Game Bar.", category: "Windows Settings" }
+        ];
+
+        let questions = [];
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let studentName = "";
+        let timerInterval = null;
+        let timeLeft = 100 * 60;
+        let warningCount = 0;
+        const maxWarnings = 3;
+
+        // Shuffle Array (Fisher-Yates Algorithm)
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Prepare unique shuffled questions & options for this student
+        function prepareShuffledQuestions() {
+            let shuffledQ = shuffleArray(rawQuestions);
+            
+            return shuffledQ.map(qObj => {
+                const correctOptionText = qObj.options[qObj.correct];
+                const shuffledOpts = shuffleArray(qObj.options);
+                const newCorrectIdx = shuffledOpts.indexOf(correctOptionText);
+
+                return {
+                    q: qObj.q,
+                    options: shuffledOpts,
+                    correct: newCorrectIdx,
+                    hint: qObj.hint,
+                    category: qObj.category
+                };
+            });
+        }
+
+        // Anti-Cheating Protection
+        window.addEventListener('blur', () => {
+            if (document.getElementById('exam-screen').classList.contains('hidden')) return;
+            warningCount++;
+            if (warningCount >= maxWarnings) {
+                alert("Security Alert: Excessive window switching! Exam auto-submitting.");
+                submitExam();
+            } else {
+                alert(`WARNING (${warningCount}/${maxWarnings}): Switching tabs or leaving exam window is strictly prohibited!`);
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && !document.getElementById('exam-screen').classList.contains('hidden')) {
+                warningCount++;
+                if (warningCount >= maxWarnings) {
+                    alert("Security Alert: Tab switching limit reached! Auto-submitting.");
+                    submitExam();
+                } else {
+                    alert(`WARNING (${warningCount}/${maxWarnings}): Do not leave the exam tab!`);
+                }
+            }
+        });
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        function startExam(e) {
+            if (e) e.preventDefault();
+            
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) {
+                alert("Please enter your full name first!");
+                return;
+            }
+            studentName = nameInput;
+
+            // Generate Randomized Question Paper for this specific student session
+            questions = prepareShuffledQuestions();
+            userAnswers = new Array(questions.length).fill(null);
+
+            // Attempt Fullscreen gracefully
+            try {
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen().catch(() => {});
+                }
+            } catch(err) {}
+
+            // Switch Screen Views
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            document.getElementById('header-timer-box').classList.remove('hidden');
+            document.getElementById('header-timer-box').classList.add('flex');
+            document.getElementById('display-student-name').innerText = studentName;
+
+            buildQuestionGrid();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById('timer-display').innerText = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time expired! Your exam will now be submitted.");
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function buildQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, index) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${index}`;
+                btn.innerText = index + 1;
+                btn.className = `w-8 h-8 rounded text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition`;
+                btn.onclick = () => goToQuestion(index);
+                grid.appendChild(btn);
+            });
+            updateGridState();
+        }
+
+        function updateGridState() {
+            questions.forEach((_, index) => {
+                const btn = document.getElementById(`grid-btn-${index}`);
+                if (!btn) return;
+                if (index === currentQuestion) {
+                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-indigo-600 text-white ring-2 ring-indigo-400`;
+                } else if (userAnswers[index] !== null) {
+                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-emerald-600 text-white`;
+                } else {
+                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600`;
+                }
+            });
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const q = questions[index];
+
+            document.getElementById('question-progress').innerText = `${index + 1} / ${questions.length}`;
+            document.getElementById('question-badge').innerText = q.category;
+            document.getElementById('question-title').innerText = `${index + 1}. ${q.q}`;
+            document.getElementById('hint-text').innerText = q.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIndex) => {
+                const isSelected = userAnswers[index] === optIndex;
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-xl border cursor-pointer transition flex items-center space-x-3 ${
+                    isSelected 
+                        ? 'bg-indigo-600/20 border-indigo-500 text-white' 
+                        : 'bg-slate-900/50 border-slate-700 text-slate-300 hover:bg-slate-700/50'
+                }`;
+                div.onclick = () => selectOption(optIndex);
+
+                div.innerHTML = `
+                    <div class="w-5 h-5 rounded-full border ${isSelected ? 'border-indigo-400 bg-indigo-500' : 'border-slate-500'} flex items-center justify-center text-xs font-bold text-white">
+                        ${isSelected ? '✓' : ''}
+                    </div>
+                    <span class="text-sm font-medium">${opt}</span>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prev-btn').disabled = index === 0;
+            if (index === questions.length - 1) {
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('submit-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.remove('hidden');
+                document.getElementById('submit-btn').classList.add('hidden');
+            }
+
+            updateGridState();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQuestion] = optIndex;
+            loadQuestion(currentQuestion);
+        }
+
+        function toggleHint() {
+            document.getElementById('hint-box').classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        function confirmSubmit() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const unanswered = questions.length - answeredCount;
+            if (unanswered > 0) {
+                if (!confirm(`You have ${unanswered} unanswered questions. Submit anyway?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm("Are you sure you want to submit your exam?")) return;
+            }
+            submitExam();
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => {});
+            }
+
+            let score = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round((score / questions.length) * 100);
+            const passed = percentage >= 70;
+
+            document.getElementById('exam-screen').classList.add('hidden');
+            document.getElementById('header-timer-box').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            document.getElementById('score-display').innerText = `${score} / ${questions.length}`;
+            document.getElementById('percentage-display').innerText = `${percentage}%`;
+
+            const badge = document.getElementById('pass-fail-badge');
+            const icon = document.getElementById('result-icon');
+            const heading = document.getElementById('result-heading');
+            const subtext = document.getElementById('result-subtext');
+
+            if (passed) {
+                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-lg mb-8 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                badge.innerText = "Status: PASSED 🎓";
+                icon.innerText = "🏆";
+                icon.className = "w-20 h-20 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6 text-3xl";
+                heading.innerText = `Congratulations, ${studentName}!`;
+                subtext.innerText = "You successfully passed with 70% or higher!";
+            } else {
+                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-lg mb-8 bg-red-500/20 text-red-400 border border-red-500/30";
+                badge.innerText = "Status: FAILED ❌";
+                icon.innerText = "⚠️";
+                icon.className = "w-20 h-20 mx-auto rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mb-6 text-3xl";
+                heading.innerText = `Keep Practicing, ${studentName}.`;
+                subtext.innerText = "You scored below 70%. Please review your concepts and try again.";
+            }
+        }
+    </script>
+</body>
+</html>
