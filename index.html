@@ -1,546 +1,872 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Basics Professional Certification Exam</title>
+    <title>Computer Basics Professional Online Exam</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        },
+                        darkbg: '#0f172a',
+                        darkcard: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; user-select: none; }
-        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        /* Anti-cheating styling & User Interface Locks */
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-none">
 
-    <!-- TOP HEADER -->
-    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <div class="bg-indigo-600 text-white p-2 rounded-lg font-bold text-lg">CB</div>
-            <div>
-                <h1 class="font-bold text-lg text-slate-100">Institute of Tech Excellence</h1>
-                <p class="text-xs text-slate-400">Computer Basics Professional Certification Exam (100 Marks)</p>
+    <!-- TOP HEADER / BRAND BAR -->
+    <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700/60 sticky top-0 z-40 px-4 py-3 shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                    <i class="fa-solid me-1 fa-laptop-code text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-wide text-white">Computer Basics Certification Exam</h1>
+                    <p class="text-xs text-slate-400">Total Questions: 100 | Passing: 70% | Duration: 100 Mins</p>
+                </div>
             </div>
-        </div>
-        <div id="header-timer-box" class="hidden items-center space-x-4 bg-slate-900 px-4 py-2 rounded-lg border border-slate-700">
-            <span class="text-xs text-slate-400 uppercase font-semibold">Time Remaining:</span>
-            <span id="timer-display" class="text-xl font-mono font-bold text-red-400">100:00</span>
+
+            <!-- Exam Timer Badge (Hidden initially) -->
+            <div id="header-timer-box" class="hidden flex items-center space-x-4">
+                <div class="bg-slate-900 border border-indigo-500/30 px-3 py-1.5 rounded-lg flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-indigo-400 animate-pulse"></i>
+                    <span id="timer-display" class="font-mono text-lg font-bold text-indigo-300">01:40:00</span>
+                </div>
+                <div class="hidden sm:block text-right">
+                    <span id="student-name-badge" class="block text-xs font-semibold text-slate-300">Student Name</span>
+                    <span class="text-[10px] text-emerald-400"><i class="fa-solid fa-shield-halved"></i> Proctored Test</span>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- MAIN CONTAINER -->
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
 
-        <!-- SCREEN 1: REGISTRATION & INSTRUCTIONS -->
-        <div id="welcome-screen" class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl">
-            <div class="text-center mb-8">
-                <span class="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Secure Online Exam</span>
-                <h2 class="text-3xl font-bold mt-3 text-white">Computer Basics Assessment</h2>
-                <p class="text-slate-400 text-sm mt-2">Total Questions: 100 | Passing Criteria: 70% (70 Marks) | Duration: 100 Minutes</p>
-            </div>
-
-            <div class="bg-slate-900/60 border border-slate-700/80 rounded-xl p-6 mb-8">
-                <h3 class="font-semibold text-amber-400 mb-3 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    Strict Exam Rules & Anti-Cheating Protocol:
-                </h3>
-                <ul class="list-disc list-inside text-sm text-slate-300 space-y-2">
-                    <li><strong class="text-emerald-400">Randomized Exam:</strong> Question order and answer choices are unique for every candidate.</li>
-                    <li>Exam will attempt to enter <strong class="text-white">Full Screen mode</strong> automatically.</li>
-                    <li><strong class="text-red-400">Switching tabs, minimizing window, or leaving screen</strong> will trigger security warnings. After 3 warnings, test will auto-submit.</li>
-                    <li>Right-click and text selection are strictly disabled.</li>
-                    <li>Total duration is 100 minutes for 100 questions (Passing criteria: 70%).</li>
-                </ul>
-            </div>
-
-            <form id="registration-form" onsubmit="startExam(event)" class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Enter Your Full Name:</label>
-                    <input type="text" id="student-name" required placeholder="e.g. Ali Ahmed" 
-                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+        <!-- STEP 1: REGISTRATION / START SCREEN -->
+        <div id="start-screen" class="max-w-xl w-full bg-slate-800/90 rounded-2xl border border-slate-700/80 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-2xl"></div>
+            <div class="text-center mb-6">
+                <div class="inline-flex p-4 bg-indigo-500/10 rounded-full text-indigo-400 mb-3">
+                    <i class="fa-solid fa-graduation-cap text-4xl"></i>
                 </div>
-                <button type="submit" id="start-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-lg shadow-lg transition duration-200 flex items-center justify-center space-x-2">
-                    <span>Start Exam Now</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <h2 class="text-2xl font-bold text-white mb-1">Online Exam Registration</h2>
+                <p class="text-slate-400 text-sm">Computer Basics & Fundamentals Test (Roman Urdu)</p>
+            </div>
+
+            <!-- Rules Box -->
+            <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-700 text-xs sm:text-sm space-y-2 mb-6 text-slate-300">
+                <h3 class="font-bold text-indigo-400 text-base mb-2 flex items-center">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Exam Rules & Anti-Cheating Policy:
+                </h3>
+                <p>1. Total Questions: <strong>100 MCQs</strong>. Dynamic Time: <strong>100 Minutes</strong>.</p>
+                <p>2. Fullscreen Mode enable hoga. Tab switch karna, Window minimize karna ya monitor badalna strictly prohibited hai.</p>
+                <p>3. Aapko maximum <strong>3 Warnings</strong> milengi. 3rd warning per exam automatically fail ho ke submit ho jayega.</p>
+                <p>4. Right-click, Copy-Paste aur F12 / Inspect shortcuts disabled rahengy.</p>
+                <p>5. Passing criteria minimum <strong>70% (70 Marks out of 100)</strong> hai.</p>
+            </div>
+
+            <form id="start-form" onsubmit="event.preventDefault(); startExam();">
+                <div class="mb-5">
+                    <label for="student-name" class="block text-xs font-semibold uppercase text-slate-300 mb-2">Student Full Name *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="student-name" required placeholder="Enter your full name..." class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-500 outline-none transition">
+                    </div>
+                </div>
+
+                <button type="submit" id="start-btn" class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Start Exam</span>
                 </button>
             </form>
         </div>
 
-        <!-- SCREEN 2: EXAM INTERFACE -->
-        <div id="exam-screen" class="hidden space-y-6">
-            <div class="flex flex-wrap justify-between items-center bg-slate-800 border border-slate-700 px-6 py-4 rounded-xl gap-4">
-                <div>
-                    <span class="text-xs text-slate-400 block">Candidate</span>
-                    <span id="display-student-name" class="font-bold text-white text-lg">---</span>
+        <!-- STEP 2: ACTIVE EXAM INTERFACE -->
+        <div id="exam-screen" class="hidden w-full max-w-7xl grid grid-cols-1 lg:grid-cols-4 gap-6 my-auto">
+
+            <!-- LEFT 3 COLS: QUESTION & OPTIONS -->
+            <div class="lg:col-span-3 flex flex-col space-y-4">
+                
+                <!-- Status Top Bar -->
+                <div class="bg-slate-800 rounded-xl p-4 border border-slate-700/80 flex items-center justify-between shadow-md">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-indigo-600/30 text-indigo-300 font-bold px-3 py-1 rounded-lg text-sm border border-indigo-500/30">
+                            Question <span id="q-current-num">1</span> of 100
+                        </span>
+                        <span id="flag-badge" class="hidden bg-amber-500/20 text-amber-300 text-xs px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center space-x-1">
+                            <i class="fa-solid fa-bookmark"></i> <span>Flagged</span>
+                        </span>
+                    </div>
+
+                    <!-- Warning Indicator Counter -->
+                    <div class="flex items-center space-x-2 bg-red-950/40 border border-red-500/30 text-red-300 px-3 py-1 rounded-lg text-xs">
+                        <i class="fa-solid fa-shield-cat"></i>
+                        <span>Violations: <strong id="warning-count-text" class="text-red-400 font-bold">0 / 3</strong></span>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <div class="text-center">
-                        <span class="text-xs text-slate-400 block">Progress</span>
-                        <span id="question-progress" class="font-bold text-indigo-400">1 / 100</span>
+
+                <!-- Main Question Card -->
+                <div class="bg-slate-800/90 rounded-2xl border border-slate-700 p-6 sm:p-8 shadow-xl flex-grow flex flex-col justify-between">
+                    <div>
+                        <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-100 leading-relaxed mb-6">
+                            Question text will appear here...
+                        </h2>
+
+                        <!-- MCQ Choices Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Hint / Explanation Collapsible Toggle -->
+                    <div class="border-t border-slate-700/80 pt-4 mt-2">
+                        <button type="button" onclick="toggleHint()" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center space-x-2 focus:outline-none">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i>
+                            <span>Need a Hint? (Roman Urdu Explanation)</span>
+                            <i id="hint-icon" class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                        </button>
+                        <div id="hint-box" class="hidden mt-3 p-3.5 bg-slate-900/90 rounded-xl border border-amber-500/20 text-slate-300 text-xs sm:text-sm leading-relaxed">
+                            <p id="hint-text">Hint explanation will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation Buttons -->
+                <div class="bg-slate-800 rounded-xl p-4 border border-slate-700/80 flex flex-wrap items-center justify-between gap-3 shadow-md">
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="navigateQuestion(-1)" id="prev-btn" class="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span>Previous</span>
+                        </button>
+                        <button type="button" onclick="navigateQuestion(1)" id="next-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1">
+                            <span>Next</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="toggleFlag()" id="flag-btn" class="bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-sm font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5">
+                            <i class="fa-regular fa-bookmark"></i>
+                            <span id="flag-btn-text">Flag for Review</span>
+                        </button>
+                        <button type="button" onclick="confirmSubmission()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-2.5 px-5 rounded-xl transition shadow-lg flex items-center space-x-1.5">
+                            <i class="fa-solid fa-check-double"></i>
+                            <span>Submit Exam</span>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Question Box -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-xl relative">
-                <div class="flex justify-between items-start mb-6">
-                    <span id="question-badge" class="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full">Category</span>
-                    <button onclick="toggleHint()" class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-medium">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                        Show Hint
-                    </button>
+            <!-- RIGHT 1 COL: QUESTION NAV GRID & SUMMARY -->
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 p-5 shadow-xl flex flex-col justify-between max-h-[80vh] lg:max-h-none overflow-hidden">
+                <div>
+                    <h3 class="font-bold text-slate-200 text-sm mb-3 flex items-center justify-between border-b border-slate-700 pb-3">
+                        <span>Question Navigation</span>
+                        <span class="text-xs font-normal text-slate-400"><span id="answered-count-num">0</span>/100 Answered</span>
+                    </h3>
+
+                    <!-- Status Legend -->
+                    <div class="grid grid-cols-2 gap-2 text-[11px] mb-4 text-slate-400">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded bg-emerald-600 inline-block"></span>
+                            <span>Answered</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded bg-amber-500 inline-block"></span>
+                            <span>Flagged</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded bg-indigo-600 inline-block"></span>
+                            <span>Current</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded bg-slate-700 inline-block"></span>
+                            <span>Unanswered</span>
+                        </div>
+                    </div>
+
+                    <!-- 100 Grid Palette -->
+                    <div id="grid-container" class="grid grid-cols-5 sm:grid-cols-10 lg:grid-cols-5 gap-2 max-h-80 overflow-y-auto pr-1">
+                        <!-- 100 Buttons generated via JS -->
+                    </div>
                 </div>
 
-                <div id="hint-box" class="hidden mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-300 text-sm">
-                    <strong>Hint:</strong> <span id="hint-text">---</span>
-                </div>
-
-                <h3 id="question-title" class="text-xl font-semibold text-white mb-6 leading-relaxed">Question text...</h3>
-
-                <div id="options-container" class="space-y-3"></div>
-            </div>
-
-            <!-- Navigation Buttons -->
-            <div class="flex justify-between items-center pt-2">
-                <button onclick="prevQuestion()" id="prev-btn" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-6 py-3 rounded-lg font-medium transition disabled:opacity-40 disabled:cursor-not-allowed">
-                    Previous
-                </button>
-                <div class="flex space-x-3">
-                    <button onclick="nextQuestion()" id="next-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition">
-                        Next
-                    </button>
-                    <button onclick="confirmSubmit()" id="submit-btn" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-semibold transition shadow-lg">
-                        Submit Exam
+                <div class="mt-4 pt-3 border-t border-slate-700 text-center">
+                    <p class="text-xs text-slate-400 mb-2">Ready to finish your test?</p>
+                    <button type="button" onclick="confirmSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow">
+                        Finish & Submit Exam
                     </button>
                 </div>
-            </div>
-
-            <!-- Navigator Grid -->
-            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
-                <p class="text-xs text-slate-400 mb-3 font-medium">Question Navigator:</p>
-                <div id="question-grid" class="grid grid-cols-10 gap-2 max-h-40 overflow-y-auto p-1"></div>
             </div>
         </div>
 
-        <!-- SCREEN 3: RESULT SCREEN -->
-        <div id="result-screen" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-8 text-center shadow-2xl">
-            <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 text-3xl">🏆</div>
-            <h2 id="result-heading" class="text-3xl font-bold text-white mb-2">Exam Completed</h2>
-            <p id="result-subtext" class="text-slate-400 text-sm mb-8">Here is your performance summary.</p>
+        <!-- STEP 3: RESULT DASHBOARD SCREEN -->
+        <div id="result-screen" class="hidden max-w-4xl w-full bg-slate-800/95 rounded-2xl border border-slate-700/80 p-6 sm:p-8 shadow-2xl">
+            <div class="text-center mb-8 border-b border-slate-700/80 pb-6">
+                <div id="result-icon-container" class="inline-flex p-4 rounded-full mb-3">
+                    <!-- Icon populated dynamically -->
+                </div>
+                <h2 class="text-3xl font-extrabold text-white mb-1">Exam Result Summary</h2>
+                <p id="student-result-name" class="text-slate-300 font-semibold text-lg">Student: --</p>
+                <p id="result-time-taken" class="text-xs text-slate-400">Completed in: -- Mins</p>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
-                    <span class="text-xs text-slate-400 block">Total Marks</span>
-                    <span class="text-2xl font-bold text-white">100</span>
+            <!-- Metrics Cards Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl text-center">
+                    <span class="block text-xs uppercase text-slate-400 font-semibold">Total Marks</span>
+                    <span id="res-score" class="text-2xl font-bold text-white mt-1">0 / 100</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
-                    <span class="text-xs text-slate-400 block">Your Score</span>
-                    <span id="score-display" class="text-2xl font-bold text-indigo-400">0</span>
+                <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl text-center">
+                    <span class="block text-xs uppercase text-slate-400 font-semibold">Percentage</span>
+                    <span id="res-percentage" class="text-2xl font-bold text-indigo-400 mt-1">0%</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl">
-                    <span class="text-xs text-slate-400 block">Percentage</span>
-                    <span id="percentage-display" class="text-2xl font-bold text-amber-400">0%</span>
+                <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl text-center">
+                    <span class="block text-xs uppercase text-slate-400 font-semibold">Status</span>
+                    <span id="res-status" class="inline-block px-3 py-1 text-xs font-bold rounded-full mt-2">PASS</span>
+                </div>
+                <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl text-center">
+                    <span class="block text-xs uppercase text-slate-400 font-semibold">Correct Answers</span>
+                    <span id="res-correct" class="text-2xl font-bold text-emerald-400 mt-1">0</span>
                 </div>
             </div>
 
-            <div id="pass-fail-badge" class="inline-block px-6 py-2 rounded-full font-bold text-lg mb-8">
-                Status: ---
+            <!-- Detailed Breakdown Accordion Header -->
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-slate-200">Detailed Answer Review</h3>
+                <span class="text-xs text-slate-400">Pass Mark: 70% (70 Marks)</span>
             </div>
 
-            <div>
-                <button onclick="location.reload()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition">
-                    Retake Exam
+            <!-- Scrollable Detailed Q&A Review List -->
+            <div id="review-container" class="max-h-96 overflow-y-auto space-y-4 pr-2 mb-6">
+                <!-- Detailed Q&A generated dynamically via JS -->
+            </div>
+
+            <div class="text-center pt-4 border-t border-slate-700">
+                <button type="button" onclick="location.reload()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Take Exam Again
                 </button>
             </div>
         </div>
 
     </main>
 
-    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800">
-        Institute of Tech Excellence &copy; 2026. All rights reserved. Secure Examination Portal.
+    <!-- ANTI-CHEATING WARNING MODAL -->
+    <div id="warning-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border-2 border-red-500 max-w-md w-full rounded-2xl p-6 text-center shadow-2xl transform transition-all">
+            <div class="inline-flex p-3 bg-red-500/10 text-red-500 rounded-full mb-3">
+                <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Anti-Cheating Violation Warning!</h3>
+            <p id="warning-modal-text" class="text-slate-300 text-sm mb-6">
+                Aap ne window minimize ki, dusra tab open kiya ya screen switch ki.
+            </p>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 mb-6">
+                <p class="text-xs text-slate-400">Total Warnings Used:</p>
+                <p class="text-2xl font-bold text-red-400"><span id="warn-strike-num">1</span> / 3</p>
+            </div>
+            <button type="button" onclick="closeWarningModal()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-4 rounded-xl transition">
+                I Understand & Continue Test
+            </button>
+        </div>
+    </div>
+
+    <!-- SUBMIT CONFIRMATION MODAL -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 max-w-md w-full rounded-2xl p-6 text-center shadow-2xl">
+            <div class="inline-flex p-3 bg-indigo-500/10 text-indigo-400 rounded-full mb-3">
+                <i class="fa-solid fa-circle-question text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Submit Exam Confirmation</h3>
+            <p class="text-slate-300 text-sm mb-4">
+                Kya aap waqai apna exam submit karna chahte hain?
+            </p>
+            <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-700 text-xs text-slate-400 space-y-1 mb-6 text-left">
+                <p>• Total Questions: <strong>100</strong></p>
+                <p>• Answered Questions: <strong id="modal-answered-num" class="text-emerald-400">0</strong></p>
+                <p>• Unanswered Questions: <strong id="modal-unanswered-num" class="text-amber-400">100</strong></p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button type="button" onclick="closeConfirmModal()" class="w-1/2 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold py-2.5 rounded-xl text-sm transition">
+                    Cancel
+                </button>
+                <button type="button" onclick="finalSubmitExam()" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-sm transition shadow">
+                    Yes, Submit Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 py-3 px-4 border-t border-slate-800 text-center text-xs text-slate-500">
+        Computer Basics Online Examination Portal &copy; 2026 | All Rights Reserved.
     </footer>
 
+    <!-- SCRIPT SECTION -->
     <script>
-        const rawQuestions = [
-            { q: "What is a computer?", options: ["An electronic device that manipulates information or data", "A mechanical engine used solely for printing documents", "A device that only connects to the internet", "A calculator with a screen"], correct: 0, hint: "It processes raw data into information.", category: "Computer Basics" },
-            { q: "Which component is considered the 'brain' of the computer?", options: ["RAM", "Hard Drive", "CPU", "Graphics Card"], correct: 2, hint: "Central Processing Unit.", category: "Computer Basics" },
-            { q: "What does 'IP' stand for in networking?", options: ["Internal Program", "Internet Protocol", "Information Provider", "Interconnected Port"], correct: 1, hint: "Protocol for network addressing.", category: "IP & Networking" },
-            { q: "Which component stores data permanently even when computer is powered off?", options: ["RAM", "Cache Memory", "Hard Drive / SSD", "Registers"], correct: 2, hint: "Non-volatile storage.", category: "Internal Parts" },
-            { q: "What is the primary function of RAM?", options: ["To store permanent backups", "To temporarily hold active data for CPU", "To cool the processor", "To connect to Wi-Fi"], correct: 1, hint: "Volatile fast memory.", category: "RAM" },
-            { q: "What does a Graphics Card (GPU) primarily do?", options: ["Manages audio", "Accelerates rendering of 2D/3D graphics and video", "Powers PC", "Increases internet speed"], correct: 1, hint: "Handles pixels and 3D rendering.", category: "Graphics Card" },
-            { q: "What is an Optical Drive used for?", options: ["Reading/writing CDs, DVDs, or Blu-ray discs with lasers", "Cooling cables", "Screen brightness", "Scanning paper"], correct: 0, hint: "Laser disc reader.", category: "Optical Drive" },
-            { q: "What is a VPN?", options: ["Virtual Private Network for secure/encrypted internet connection", "Visual Pixel Network", "Virus Protection Node", "Voice Processing Node"], correct: 0, hint: "Encrypts internet traffic.", category: "VPN & Proxy" },
-            { q: "What is a Proxy Server?", options: ["An intermediary server between client and internet", "A physical backup generator", "Motherboard chipset", "Mouse accessory"], correct: 0, hint: "Gateway server.", category: "VPN & Proxy" },
-            { q: "Which of these is an example of an Operating System?", options: ["Microsoft Word", "Windows 11", "Google Chrome", "Adobe Photoshop"], correct: 1, hint: "System software managing hardware.", category: "Computer Basics" },
+        /* ----------------------------------------------------
+           1. FULL 100 COMPREHENSIVE MCQS QUESTION BANK
+           ---------------------------------------------------- */
+        const questionsData = [
+            // Shortcut Keys (1 to 26: Ctrl+A to Ctrl+Z)
+            { id: 1, q: "Ctrl + A short cut key kis maqsad k liye use hoti hai?", options: ["Select All (Tamam text/items ko select karne ke liye)", "Copy karne ke liye", "Paste karne ke liye", "Undo karne ke liye"], ans: 0, hint: "Ctrl+A se screen par mojood tamam content ek saath select ho jata hai." },
+            { id: 2, q: "Ctrl + B short cut key ka kia function hai?", options: ["Text ko italic karna", "Text ko Bold (mota) karna", "Text ko underline karna", "Background color badalna"], ans: 1, hint: "B se Bold banta hai, yeh text ko dark aur mota kar deta hai." },
+            { id: 3, q: "Ctrl + C shortcut key se computer mein kya hota hai?", options: ["Selected text/file ko Copy karna", "Cut karna", "Close karna", "Cancel karna"], ans: 0, hint: "C stands for Copy. Original item wahin rehta hai aur duplicate copy ho jata hai." },
+            { id: 4, q: "Ctrl + D key combination MS Word mein kya open karti hai?", options: ["Font dialog box / Bookmark popup", "Delete file options", "Download folder", "Desktop view"], ans: 0, hint: "Ctrl+D font settings aur style formatting dialog box kholta hai." },
+            { id: 5, q: "Ctrl + E key MS Word ya Browsers mein kis kaam aati hai?", options: ["Text ko Center Align karne ke liye", "Exit karne ke liye", "Erase karne ke liye", "E-mail bhejne ke liye"], ans: 0, hint: "Center alignment ke liye Ctrl+E istemal hota hai." },
+            { id: 6, q: "Ctrl + F short cut key ka istemal kis liye hota hai?", options: ["Text ya file ko Find (talaash) karne ke liye", "Format karne ke liye", "Font size barhane ke liye", "Full screen karne ke liye"], ans: 0, hint: "F for Find. Is se search bar open ho jati hai." },
+            { id: 7, q: "Ctrl + G short cut key se kya hota hai?", options: ["Go To (kisi khas page ya line par jane ke liye)", "Group karne ke liye", "Graph banane ke liye", "Grid View ke liye"], ans: 0, hint: "G stands for Go To." },
+            { id: 8, q: "Ctrl + H short cut key kis kaam aati hai?", options: ["Replace dialog box kholne ke liye", "Help kholne ke liye", "History hide karne ke liye", "Home page par jane ke liye"], ans: 0, hint: "Find and Replace menu mein kisi lafz ko doosre lafz se badalne ke liye." },
+            { id: 9, q: "Ctrl + I shortcut key text par kya effect dalti hai?", options: ["Text ko Italic (tircha) karne ke liye", "Insert shape ke liye", "Indent dene ke liye", "Image add karne ke liye"], ans: 0, hint: "I for Italic, jo text ko slant/tircha kar deta hai." },
+            { id: 10, q: "Ctrl + J key combination kis liye use hoti hai?", options: ["Text ko Justify (dono side se barabar) karne ke liye", "Join karne ke liye", "Jump karne ke liye", "Journal open karne ke liye"], ans: 0, hint: "Paragraphs ke dono kinare seedhe barabar karne ke liye Justify hota hai." },
+            { id: 11, q: "Ctrl + K shortcut key kis cheez ke liye use hoti hai?", options: ["Hyperlink insert karne ke liye", "Kill process ke liye", "Keylock enable karne ke liye", "Keyword search ke liye"], ans: 0, hint: "K for Link (Hyperlink) lagane ke liye." },
+            { id: 12, q: "Ctrl + L shortcut key ka primary function kya hai?", options: ["Left Alignment karne ke liye", "Lock screen ke liye", "Logout karne ke liye", "Line space dene ke liye"], ans: 0, hint: "Text ko left side par align karne ke liye." },
+            { id: 13, q: "Ctrl + M key MS Word mein kya karti hai?", options: ["Paragraph Indent barhane ke liye", "New mail open karne ke liye", "Minimize karne ke liye", "Macro run karne ke liye"], ans: 0, hint: "Paragraph Indent ko aage shift karti hai." },
+            { id: 14, q: "Ctrl + N shortcut key ka kya matlab hota hai?", options: ["New File ya New Window kholna", "Next page par jana", "Name badalna", "Network connect karna"], ans: 0, hint: "N for New document/window." },
+            { id: 15, q: "Ctrl + O shortcut key kis purpose ke liye use hoti hai?", options: ["Existing document ko Open karne ke liye", "Object insert ke liye", "Output view ke liye", "Online search ke liye"], ans: 0, hint: "O for Open file." },
+            { id: 16, q: "Ctrl + P shortcut key kis function ke liye mashhoor hai?", options: ["Print dialog box kholne ke liye", "Page break ke liye", "Paste karne ke liye", "Picture add karne ke liye"], ans: 0, hint: "P for Print document." },
+            { id: 17, q: "Ctrl + Q shortcut key MS Word mein kya kaam karti hai?", options: ["Paragraph formatting ko Remove karna", "Quit program", "Quick save", "Query search"], ans: 0, hint: "Added paragraph formatting ko clear kar deti hai." },
+            { id: 18, q: "Ctrl + R key combination kis kaam aati hai?", options: ["Right Alignment ya Browser Refresh karne ke liye", "Redo karne ke liye", "Remove file", "Restart computer"], ans: 0, hint: "Text ko right side align karti hai aur browser page refresh karti hai." },
+            { id: 19, q: "Ctrl + S shortcut key ki kya importance hai?", options: ["File ko Save karne ke liye", "Select karne ke liye", "Shutdown karne ke liye", "System settings ke liye"], ans: 0, hint: "S for Save document to disk." },
+            { id: 20, q: "Ctrl + T shortcut key se Browsers mein kya hota hai?", options: ["New Tab open hota hai", "Total sum nikalta hai", "Time display hota hai", "Task Manager khulta hai"], ans: 0, hint: "T for New Tab in web browsers." },
+            { id: 21, q: "Ctrl + U key selected text par kya karti hai?", options: ["Text ke neeche Underline lagati hai", "Undo karti hai", "Unlink karti hai", "Upper case mein badalti hai"], ans: 0, hint: "U for Underline." },
+            { id: 22, q: "Ctrl + V shortcut key kis maqsad ke liye use hoti hai?", options: ["Copy ya Cut kiye gaye text ko Paste karna", "View change karna", "Video play karna", "Volume barhana"], ans: 0, hint: "Clipboard se content ko screen par paste karne ke liye." },
+            { id: 23, q: "Ctrl + W shortcut key kya action perform karti hai?", options: ["Current window ya tab ko Close karna", "Word count dikhana", "Web search karna", "Window maximize karna"], ans: 0, hint: "W for Close current active window/tab." },
+            { id: 24, q: "Ctrl + X key ka function kya hai?", options: ["Text ya Item ko Cut (move) karne ke liye", "Exit karne ke liye", "XML view ke liye", "X-ray filter ke liye"], ans: 0, hint: "X scissors jaisa lagta hai, content cut karke doosri jagah le jane ke liye." },
+            { id: 25, q: "Ctrl + Y shortcut key ka kya kaam hai?", options: ["Redo (aakhri undo action ko dohrana)", "Yellow color fill", "Yield process", "Year selection"], ans: 0, hint: "Redo action perform karne ke liye Ctrl+Y." },
+            { id: 26, q: "Ctrl + Z shortcut key sab se ziada kis liye istemal hoti hai?", options: ["Undo (aakhri ghalti ko wapas pehle jaisa karna)", "Zoom in karna", "Zip file banana", "Zero alignment"], ans: 0, hint: "Z for Undo last operation." },
 
-            { q: "Which of the following is an input device?", options: ["Monitor", "Printer", "Keyboard", "Speaker"], correct: 2, hint: "Used for typing.", category: "External Parts" },
-            { q: "Which device outputs visual information from the computer?", options: ["Mouse", "Monitor", "Microphone", "Scanner"], correct: 1, hint: "Display screen.", category: "External Parts" },
-            { q: "What is the main purpose of a UPS?", options: ["To provide backup power during sudden outages", "To boost internet speed", "To overclock processor", "To print documents"], correct: 0, hint: "Uninterruptible Power Supply.", category: "External Parts" },
-            { q: "Which device digitizes physical paper documents into files?", options: ["Printer", "Scanner", "Projector", "Speaker"], correct: 1, hint: "Scans images into PC.", category: "External Parts" },
-            { q: "Which cable carries both high-definition video and audio?", options: ["VGA", "HDMI", "PS/2", "Parallel"], correct: 1, hint: "High-Definition Multimedia Interface.", category: "External Parts" },
-            { q: "What type of device is a Computer Mouse?", options: ["Input device", "Output device", "Storage device", "Processing device"], correct: 0, hint: "Pointing device.", category: "External Parts" },
-            { q: "Which audio device captures user speech into the PC?", options: ["Headphones", "Microphone", "Speaker", "Sound Card"], correct: 1, hint: "Audio input.", category: "External Parts" },
-            { q: "What does a Projector do?", options: ["Projects screen display onto large screen or wall", "Prints 3D models", "Scans barcodes", "Cools room"], correct: 0, hint: "Big screen projection.", category: "External Parts" },
-            { q: "Which device plays sound out loud from computer?", options: ["Microphone", "Speakers", "Webcam", "Keyboard"], correct: 1, hint: "Audio output.", category: "External Parts" },
-            { q: "What is a Webcam primarily used for?", options: ["Video calls and video capture", "Reading text", "Backups", "Speed test"], correct: 0, hint: "Camera device.", category: "External Parts" },
-            { q: "Which device is used for gaming controls besides keyboard/mouse?", options: ["Gamepad / Joystick", "External HDD", "UPS", "Ethernet Cable"], correct: 0, hint: "Handheld controller.", category: "External Parts" },
-            { q: "What is a Barcode Scanner?", options: ["Input device reading printed barcode lines", "Receipt printer", "Drive", "Power regulator"], correct: 0, hint: "Scans retail code lines.", category: "External Parts" },
-            { q: "Which cable connects PC to wired Local Area Network (LAN)?", options: ["VGA", "Ethernet (RJ45)", "Power Cable", "USB-C"], correct: 1, hint: "Network cable.", category: "External Parts" },
-            { q: "What is a Stylus Pen used with?", options: ["Touchscreens and drawing tablets", "Keyboards", "Hard drives", "Power supplies"], correct: 0, hint: "Digital drawing pen.", category: "External Parts" },
-            { q: "Which peripheral combines printing, scanning, and copying?", options: ["All-in-One Multi-function Printer", "Graphics Tablet", "External GPU", "Network Switch"], correct: 0, hint: "Multi-function printer.", category: "External Parts" },
+            // What is Computer & Fundamentals (27 to 31)
+            { id: 27, q: "Computer basically kya hai?", options: ["Ek electronic machine jo raw data ko process karke information mein badalti hai", "Ek sirf gaming box hai", "Ek manual calculator hai", "Ek mechanical engine hai"], ans: 0, hint: "Computer ek programmable electronic device hai jo Input -> Process -> Output karti hai." },
+            { id: 28, q: "Computer ka basic IPO cycle kya hota hai?", options: ["Input -> Processing -> Output", "Output -> Input -> Process", "Process -> Input -> Storage", "Input -> Storage -> Print"], ans: 0, hint: "Computer sab se pehle Data leta hai (Input), process karta hai aur Result (Output) deta hai." },
+            { id: 29, q: "Computer ka brain (Dimaag) kis component ko kaha jata hai?", options: ["CPU (Central Processing Unit)", "RAM", "Hard Disk", "Monitor"], ans: 0, hint: "CPU tamam calculations aur decision making karta hai." },
+            { id: 30, q: "Data aur Information mein kya bunyadi farq hai?", options: ["Data unorganized raw facts hote hain jabke Information processed data hoti hai", "Data hamesha sahi hota hai information ghalt", "Dono ek hi cheez hain", "Information raw hoti hai data organized"], ans: 0, hint: "Raw figures = Data, Meaningful result = Information." },
+            { id: 31, q: "Software aur Hardware mein kya farq hai?", options: ["Hardware ko hum chhoo sakte hain jabke Software programs/instructions hoti hain", "Software physical hota hai", "Dono ko chhoo sakte hain", "Hardware hamesha internet par chalta hai"], ans: 0, hint: "Physical components = Hardware, Code/Programs = Software." },
 
-            { q: "What is the Motherboard?", options: ["The main circuit board connecting all internal parts", "Computer casing", "Software driver", "UPS unit"], correct: 0, hint: "Central circuit board.", category: "Internal Parts" },
-            { q: "What does SMPS stand for?", options: ["Switched-Mode Power Supply", "System Memory Speed", "Secure Multimedia System", "Synchronous Motherboard Slot"], correct: 0, hint: "Power supply unit.", category: "Internal Parts" },
-            { q: "What is the purpose of a CPU Heatsink/Cooler?", options: ["To dissipate heat generated by CPU", "To speed up internet", "To increase RAM", "To clean dust"], correct: 0, hint: "Keeps CPU cool.", category: "Internal Parts" },
-            { q: "What is NVMe SSD?", options: ["High-speed solid state drive via PCIe bus", "Optical disc type", "Battery", "Network card"], correct: 0, hint: "Ultra-fast modern storage.", category: "Internal Parts" },
-            { q: "What is the CMOS battery used for on motherboard?", options: ["Maintains time/date and BIOS settings when off", "Powers CPU during games", "Charges mouse", "Cools GPU"], correct: 0, hint: "Coin battery for BIOS clock.", category: "Internal Parts" },
-            { q: "What is a Sound Card responsible for?", options: ["Processing audio input and output", "Rendering 3D frames", "Managing Bluetooth", "Encrypting files"], correct: 0, hint: "Audio processor.", category: "Internal Parts" },
-            { q: "What is Thermal Paste used for?", options: ["Improves heat transfer between CPU and heatsink", "Glues chips", "Insulates wires", "Cleans disk"], correct: 0, hint: "Applied between CPU and cooler.", category: "Internal Parts" },
-            { q: "What does BIOS stand for?", options: ["Basic Input/Output System", "Binary Integrated Operating Software", "Basic Internet Service", "Built-in Optical Storage"], correct: 0, hint: "Firmware initializing hardware.", category: "Internal Parts" },
-            { q: "What component is inside a traditional Hard Disk Drive (HDD)?", options: ["Spinning magnetic platters and read/write heads", "Flash memory chips", "Laser diodes", "Fans"], correct: 0, hint: "Spinning magnetic disk.", category: "Internal Parts" },
-            { q: "Which slot is used for modern Graphics Cards on motherboard?", options: ["PCI Express (PCIe)", "ISA Slot", "AGP Slot", "PCI Slot"], correct: 0, hint: "High-speed expansion slot.", category: "Internal Parts" },
-            { q: "What is a System Fan responsible for?", options: ["Maintaining airflow inside PC case", "Generating Wi-Fi", "Reading discs", "Overclocking"], correct: 0, hint: "Airflow management.", category: "Internal Parts" },
-            { q: "What is ECC RAM?", options: ["Error-Correcting Code RAM for server data protection", "Gaming RAM", "Enhanced Cache RAM", "External Card RAM"], correct: 0, hint: "Detects and corrects memory corruption.", category: "Internal Parts" },
-            { q: "What is a Network Interface Card (NIC)?", options: ["Hardware connecting computer to network", "Audio playing card", "Graphics card", "Storage card"], correct: 0, hint: "Ethernet/Wi-Fi adapter.", category: "Internal Parts" },
-            { q: "What is primary difference between HDD and SSD?", options: ["SSD uses flash memory with no moving parts; HDD uses spinning disks", "HDD is faster", "SSD is for audio only", "HDD has no moving parts"], correct: 0, hint: "Solid state vs mechanical.", category: "Internal Parts" },
-            { q: "What is UEFI?", options: ["Unified Extensible Firmware Interface (successor to BIOS)", "Universal Ethernet Interchange", "User Environment Integration", "Ultra Execution Interface"], correct: 0, hint: "Modern BIOS replacement.", category: "Internal Parts" },
+            // External Parts of Computer (32 to 39)
+            { id: 32, q: "Monitor kis type ka device hai?", options: ["Output Device (Display dikhane ke liye)", "Input Device", "Storage Device", "Processing Device"], ans: 0, hint: "Monitor visuals screen par show karta hai is liye output device hai." },
+            { id: 33, q: "Keyboard ka primary function kya hai?", options: ["Computer ko text aur commands Input dena", "Audio output sunna", "Print nikalna", "Power supply dena"], ans: 0, hint: "Keyboard keypresses ke zariye input data bhejta hai." },
+            { id: 34, q: "Mouse ko computer mein kis category mein rakha jata hai?", options: ["Pointing Input Device", "Primary Output Device", "Optical Storage", "Internal Card"], ans: 0, hint: "Mouse cursor point karne ke liye input device hai." },
+            { id: 35, q: "Printer kis maqsad ke liye use hota hai?", options: ["Soft copy ko Hard copy (paper print) mein badalne ke liye", "Scan karne ke liye", "Sound play karne ke liye", "Data store karne ke liye"], ans: 0, hint: "Printer paper par physical print nikalta hai (Hard copy)." },
+            { id: 36, q: "Scanner kis qism ka device hai?", options: ["Input Device (Physical document ko digital image banane wala)", "Output Device", "Storage Device", "Cooling Device"], ans: 0, hint: "Paper document ko scan karke computer mein bhejta hai (Input)." },
+            { id: 37, q: "Speakers computer se kya provide karte hain?", options: ["Audio Output", "Visual Output", "Text Input", "Binary Storage"], ans: 0, hint: "Speakers awaaz ki surat mein output dete hain." },
+            { id: 38, q: "Webcam kis kaam ke liye use kiya jata hai?", options: ["Video input aur live stream / video calls ke liye", "Screen output ke liye", "Paper print ke liye", "Virus scanning ke liye"], ans: 0, hint: "Webcam video feed computer ko input deta hai." },
+            { id: 39, q: "Projector ka bunyadi maqsad kya hota hai?", options: ["Badi screen ya deewar par display Output dikhana", "Sound record karna", "Computer restart karna", "Internet connect karna"], ans: 0, hint: "Projector light display ko bari screen par project karta hai." },
 
-            { q: "Which memory type is faster: RAM or Hard Drive?", options: ["RAM", "Hard Drive", "Both equal", "Depends on color"], correct: 0, hint: "RAM has microsecond speeds.", category: "RAM" },
-            { q: "What does DDR stand for in RAM?", options: ["Double Data Rate", "Digital Data Register", "Dynamic Dual Resolution", "Direct Data Routing"], correct: 0, hint: "Transfers data twice per clock cycle.", category: "RAM" },
-            { q: "What happens if PC runs out of RAM?", options: ["System slows down and uses pagefile (virtual memory)", "PC explodes", "Deletes files", "Internet speeds up"], correct: 0, hint: "Uses hard disk space as virtual RAM.", category: "RAM" },
-            { q: "What is VRAM?", options: ["Video RAM dedicated to graphics processing", "Virtual RAM on hard disk", "Voice RAM", "Variable Access Memory"], correct: 0, hint: "Memory on GPU.", category: "Graphics Card" },
-            { q: "Which factor besides size determines RAM performance?", options: ["Clock speed (MHz) and latency", "Color", "Logo", "Weight"], correct: 0, hint: "MHz / MT/s speed.", category: "RAM" },
-            { q: "What is Integrated Graphics?", options: ["GPU built into the CPU die sharing system RAM", "Dedicated PCIe graphics card", "USB GPU", "Cloud GPU"], correct: 0, hint: "Built into CPU.", category: "Graphics Card" },
-            { q: "What is desktop RAM slot called?", options: ["DIMM slot", "PCI slot", "SATA port", "M.2 slot"], correct: 0, hint: "Dual In-line Memory Module.", category: "RAM" },
-            { q: "What is Ray Tracing in GPUs?", options: ["Simulating physical light rays for realistic reflections/shadows", "Tracing internet cables", "Measuring refresh rate", "Antivirus scan"], correct: 0, hint: "Realistic lighting simulation.", category: "Graphics Card" },
-            { q: "Can you mix different RAM speeds?", options: ["Yes, but all sticks run at speed of slowest stick", "No, damages motherboard", "Only if same color", "Impossible"], correct: 0, hint: "Runs at lowest common speed.", category: "RAM" },
-            { q: "What are CUDA cores or Stream Processors?", options: ["Parallel processing cores inside GPU", "Fans on GPU", "Power pins", "Display outputs"], correct: 0, hint: "GPU rendering cores.", category: "Graphics Card" },
+            // Internal Parts of Computer (40 to 49)
+            { id: 40, q: "Motherboard kya hota hai?", options: ["Main circuit board jisse computer ke tamam internal/external parts connect hote hain", "Ek battery hai", "Screen display card hai", "Cabinet ka bahri dhancha hai"], ans: 0, hint: "Motherboard computer ka backbone circuit board hai." },
+            { id: 41, q: "SMPS / Power Supply Unit (PSU) ka kya kaam hai?", options: ["AC electricity ko DC voltage mein badal kar components ko power dena", "Data process karna", "Internet speed barhana", "Cooling karna"], ans: 0, hint: "Power supply motherboard aur devices ko bijli deta hai." },
+            { id: 42, q: "Hard Disk Drive (HDD) ya SSD kis liye hoti hain?", options: ["Permanent Long-term Data Storage ke liye", "Temporary calculation ke liye", "Only display graphics ke liye", "Awaaz paida karne ke liye"], ans: 0, hint: "Operating system aur files permanent store karne ke liye non-volatile memory." },
+            { id: 43, q: "CPU Heat Sink aur Fan ka kya function hai?", options: ["Processor ko zyada garam (overheat) hone se bachana aur thanda rakhna", "Dust safai karna", "Speed slow karna", "Sound produce karna"], ans: 0, hint: "CPU bohot heat generate karta hai jise fan cool rakhta hai." },
+            { id: 44, q: "Internal Expansion Slots (e.g. PCIe) kis liye hote hain?", options: ["Graphic card, Network card wagera add karne ke liye", "RAM lagane ke liye", "Processor fit karne ke liye", "Power dene ke liye"], ans: 0, hint: "PCIe slots additional add-on cards lagane ke liye hotay hain." },
+            { id: 45, q: "CMOS Battery motherboard par kis liye hoti hai?", options: ["System Time, Date aur BIOS settings ko power dene ke liye", "Full computer chalane ke liye", "Display brighten karne ke liye", "RAM speed double karne ke liye"], ans: 0, hint: "Computer off hone par bhi time aur BIOS settings save rehti hain." },
+            { id: 46, q: "BIOS / UEFI chip ka kya kaam hai?", options: ["Computer turn on hone par Hardware check (POST) aur Booting karwana", "Movies play karna", "Internet browse karna", "Virus delete karna"], ans: 0, hint: "Basic Input Output System boot-up process ko handle karta hai." },
+            { id: 47, q: "Processor socket kya hota hai?", options: ["Motherboard par wo khas jagah jahan CPU chip fit hoti hai", "Power cord pin", "RAM slot", "USB port"], ans: 0, hint: "Socket CPU chip ko motherboard ke saath connect karti hai." },
+            { id: 48, q: "SATA Cable ya NVMe slot kis kaam aati hai?", options: ["Storage drives (HDD/SSD) ko motherboard se connect karne ke liye", "Monitor connect karne ke liye", "Speaker lagane ke liye", "Power dene ke liye"], ans: 0, hint: "SATA/NVMe high speed data transfer cables/slots hain." },
+            { id: 49, q: "Sound Card ka internal function kya hota hai?", options: ["Digital audio ko Analog sound mein convert karna speakers ke liye", "Video resolution barhana", "Data compress karna", "CPU speed fast karna"], ans: 0, hint: "Sound processing ke liye dedicated hardware." },
 
-            { q: "Max storage capacity of a single-layer standard DVD?", options: ["4.7 GB", "700 MB", "25 GB", "50 GB"], correct: 0, hint: "Standard DVD size.", category: "Optical Drive" },
-            { q: "Storage capacity of a standard CD-ROM?", options: ["700 MB", "4.7 GB", "1.44 MB", "10 GB"], correct: 0, hint: "Standard CD size.", category: "Optical Drive" },
-            { q: "What laser does Blu-ray use?", options: ["Blue-violet laser", "Red laser", "Infrared", "Magnetic"], correct: 0, hint: "Short wavelength blue light.", category: "Optical Drive" },
-            { q: "What is a BD-RE disc?", options: ["Blu-ray Disc Recordable & Erasable (Rewritable)", "Blu-ray Read Engine", "Basic Digital Element", "Regional Encoder"], correct: 0, hint: "Rewritable Blu-ray.", category: "Optical Drive" },
-            { q: "Why are optical drives rare in modern laptops?", options: ["Cloud storage, USB drives, and thin laptops", "Government ban", "Too much power needed", "Discs illegal"], correct: 0, hint: "Replaced by USB and cloud.", category: "Optical Drive" },
-            { q: "What is an external USB optical drive?", options: ["Portable disc drive plugging into USB port", "Built-in motherboard drive", "GPU accessory", "Router part"], correct: 0, hint: "External pluggable drive.", category: "Optical Drive" },
-            { q: "What does 'CD-R' stand for?", options: ["Compact Disc-Recordable", "Compact Disc-Read", "Computer Disk-Register", "Core Data Restore"], correct: 0, hint: "Write-once CD.", category: "Optical Drive" },
-            { q: "Capacity of single-layer Blu-ray disc?", options: ["25 GB", "4.7 GB", "700 MB", "100 GB"], correct: 0, hint: "HD video capacity.", category: "Optical Drive" },
-            { q: "What is DVD-RW?", options: ["Digital Versatile Disc Rewritable", "Digital Video Read Write", "Dynamic Virtual Register", "Data Volume Restorer"], correct: 0, hint: "Rewritable DVD.", category: "Optical Drive" },
-            { q: "What media replaced floppy disks before USB drives?", options: ["CDs and DVDs", "Punch cards", "Magnetic tape", "Never replaced"], correct: 0, hint: "Optical discs.", category: "Optical Drive" },
+            // Deep Dive: RAM, Graphic Card, Optical Drive (50 to 57)
+            { id: 50, q: "RAM ka full form kya hai?", options: ["Random Access Memory", "Read Access Memory", "Rapid Action Mode", "Run Applied Memory"], ans: 0, hint: "RAM stands for Random Access Memory." },
+            { id: 51, q: "RAM kis qism ki memory hai?", options: ["Volatile (Bijli janay par data khatam ho jata hai)", "Non-Volatile (Permanent)", "Optical Storage", "External Flash"], ans: 0, hint: "RAM temporary storage hoti hai, power off hone par clear ho jati hai." },
+            { id: 52, q: "RAM kam hone se computer par kya asar padta hai?", options: ["Computer slow ho jata hai aur apps hang hone lagti hain", "Computer ki hard disk phat jati hai", "Monitor dark ho jata hai", "Internet band ho jata hai"], ans: 0, hint: "Multitasking ke liye kafi RAM hona zaroori hai." },
+            { id: 53, q: "Graphic Card (GPU) ka main role kya hai?", options: ["Complex 3D visuals, Gaming aur Video Rendering ko process karna", "Document typing speed fast karna", "Files ko store karna", "Power supply stabilize karna"], ans: 0, hint: "GPU (Graphics Processing Unit) display images aur games render karta hai." },
+            { id: 54, q: "VRAM (Video RAM) kahan mojood hoti hai?", options: ["Dedicated Graphic Card ke andar", "Hard drive mein", "Processor ke andar", "Power supply mein"], ans: 0, hint: "VRAM high speed graphics memory hoti hai jo GPU par lagi hoti hai." },
+            { id: 55, q: "Graphic Card ke baghair kya display aa sakta hai?", options: ["Haan, agar CPU mein Integrated Graphics (iGPU) mojood ho", "Nahi, kabhi nahi aa sakta", "Sirf black screen aati hai", "Sirf sound aati hai"], ans: 0, hint: "Modern processors mein built-in integrated graphics card hota hai." },
+            { id: 56, q: "Optical Drive (CD/DVD/Blu-ray Drive) kya kaam karti hai?", options: ["Laser beam ki madad se CD/DVD se data Read/Write karna", "Magnetic tape se data parhna", "Internet wifi signals pakadna", "Power convert karna"], ans: 0, hint: "Optical drives laser light se disc parhna aur likhna karti hain." },
+            { id: 57, q: "DVD ki normal storage capacity kitni hoti hai?", options: ["4.7 GB", "700 MB", "25 GB", "1 TB"], ans: 0, hint: "Standard single layer DVD ki capacity 4.7 Gigabytes hoti hai." },
 
-            { q: "Shortcut key to Copy selected text?", options: ["Ctrl + C", "Ctrl + V", "Ctrl + X", "Ctrl + P"], correct: 0, hint: "C = Copy.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + V' do?", options: ["Paste", "Cut", "Copy", "Print"], correct: 0, hint: "Pastes content.", category: "Shortcut Keys" },
-            { q: "Direct shortcut key to open Task Manager in Windows?", options: ["Ctrl + Shift + Esc", "Ctrl + Alt + Del", "Alt + F4", "Win + D"], correct: 0, hint: "Opens Task Manager directly.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + Z' do?", options: ["Undo last action", "Redo action", "Zoom in", "Save"], correct: 0, hint: "Undo.", category: "Shortcut Keys" },
-            { q: "Shortcut to select all items?", options: ["Ctrl + A", "Ctrl + S", "Ctrl + F", "Ctrl + N"], correct: 0, hint: "A = All.", category: "Shortcut Keys" },
-            { q: "What does 'Alt + F4' do?", options: ["Closes active window/program", "Opens search", "Minimizes windows", "Restarts PC"], correct: 0, hint: "Closes app.", category: "Shortcut Keys" },
-            { q: "Function of 'Windows Key + D'?", options: ["Show/Hide Desktop", "Settings", "Lock PC", "File Explorer"], correct: 0, hint: "D = Desktop.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + P' do?", options: ["Print document", "Paste", "Open project", "Properties"], correct: 0, hint: "P = Print.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + F' do?", options: ["Find / Search text", "Format text", "File menu", "Refresh"], correct: 0, hint: "F = Find.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + S' do?", options: ["Save file", "Search", "Select all", "Switch"], correct: 0, hint: "S = Save.", category: "Shortcut Keys" },
-            { q: "Shortcut to open File Explorer in Windows?", options: ["Windows Key + E", "Windows Key + I", "Windows Key + R", "Windows Key + L"], correct: 0, hint: "E = Explorer.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + X' do?", options: ["Cut selected item", "Copy", "Close tab", "Delete"], correct: 0, hint: "Cut operation.", category: "Shortcut Keys" },
-            { q: "Shortcut to switch between open applications?", options: ["Alt + Tab", "Ctrl + Tab", "Win + Tab", "Ctrl + Shift"], correct: 0, hint: "Alt + Tab switcher.", category: "Shortcut Keys" },
-            { q: "What does 'F2' key do on selected file?", options: ["Rename file", "Delete file", "Refresh", "Help"], correct: 0, hint: "Quick rename.", category: "Shortcut Keys" },
-            { q: "What does 'Ctrl + Shift + N' do in File Explorer?", options: ["Create new folder", "Open document", "Print preview", "Close"], correct: 0, hint: "New Folder shortcut.", category: "Shortcut Keys" },
+            // Networking Basics: IP, Types, VPN, Proxy (58 to 69)
+            { id: 58, q: "IP Address ka kya matlab hota hai?", options: ["Internet Protocol Address (Computer ka unique network address)", "Internal Process Identification", "Internet Provider Area", "Instant Power Access"], ans: 0, hint: "Network par kisi bhi device ka numeric pehchan address." },
+            { id: 59, q: "IPv4 aur IPv6 mein kitne bits ka farq hota hai?", options: ["IPv4 32-bit aur IPv6 128-bit hota hai", "IPv4 16-bit aur IPv6 32-bit", "Dono 64-bit hote hain", "IPv4 128-bit aur IPv6 32-bit"], ans: 0, hint: "IPv4 32-bit number hota hai jabke modern IPv6 128-bit hai." },
+            { id: 60, q: "Public IP aur Private IP mein kya farq hai?", options: ["Public IP global internet par dikhti hai, Private IP local home/office router mein hoti hai", "Public IP free hoti hai Private mehngi", "Private IP internet par open hoti hai", "Dono same hoti hain"], ans: 0, hint: "Private IP LAN network ke liye hoti hai, Public IP ISP deta hai internet ke liye." },
+            { id: 61, q: "Static IP Address kya hota hai?", options: ["Aisa IP address jo kabhi change na ho (Fixed)", "Jo har baar restart hone par badal jaye", "Jo temporary ho", "Jo bina internet ke chaley"], ans: 0, hint: "Static IP constant/fixed rehta hai (e.g. servers ke liye)." },
+            { id: 62, q: "Dynamic IP Address kisey kehte hain?", options: ["Aisa IP jo DHCP server ki taraf se automatically aur periodically badalta rahe", "Jo lifetime fixed ho", "Jo secure na ho", "Jo manual enter kiya jaye"], ans: 0, hint: "Dynamic IP router khud time to time change karta hai." },
+            { id: 63, q: "VPN ka full form kya hai?", options: ["Virtual Private Network", "Visual Process Node", "Verified Public Network", "Virtual Power Number"], ans: 0, hint: "VPN stands for Virtual Private Network." },
+            { id: 64, q: "VPN ka main advantage kya hai?", options: ["Internet traffic ko Encrypt karna aur real IP address chhipana", "Internet speed 10x karna", "Free internet chalana", "Computer ki RAM barhana"], ans: 0, hint: "VPN security, privacy aur location spoofing ke liye encrypted tunnel banata hai." },
+            { id: 65, q: "Proxy Server kya kaam karta hai?", options: ["User aur Internet ke darmayan Mediating Gateway (bichola) ka kaam karta hai", "Antivirus ka kaam karta hai", "Hard disk ko format karta hai", "Monitor ki light tez karta hai"], ans: 0, hint: "Proxy aapki requests ko apne zariye aage bhejta hai." },
+            { id: 66, q: "Proxy aur VPN mein sab se bada farq kya hai?", options: ["VPN poore system ka traffic encrypt karta hai jabke Proxy sirf specific app/browser traffic ko redirect karta hai", "Proxy ziada secure hota hai", "VPN bina internet ke chalta hai", "Dono ek hi cheez hain"], ans: 0, hint: "VPN operating system level par encryption karta hai." },
+            { id: 67, q: "IP Address '127.0.0.1' kis maqsad ke liye reserved hota hai?", options: ["Loopback / Localhost (Apne hi computer ko test karne ke liye)", "Google DNS", "Router default gateway", "Public Server"], ans: 0, hint: "127.0.0.1 ko localhost kehate hain." },
+            { id: 68, q: "MAC Address aur IP Address mein kya farq hai?", options: ["MAC address physical hardware ka permanent address hota hai, IP logical network address hota hai", "MAC address ISP deta hai", "IP address badla nahi ja sakta", "Dono same hain"], ans: 0, hint: "MAC address NIC card par permanently burn hota hai." },
+            { id: 69, q: "DHCP Protocol ka networking mein kya role hai?", options: ["Devices ko automatically IP Addresses assign karna", "Domain name ko IP mein badalna", "Emails bhejna", "Files transfer karna"], ans: 0, hint: "Dynamic Host Configuration Protocol auto IP allocation karta hai." },
 
-            { q: "IPv4 address format example?", options: ["192.168.1.1 (Four dot-separated numbers)", "Hexadecimal string with colons", "10-digit number", "google.com"], correct: 0, hint: "4 octets.", category: "IP & Networking" },
-            { q: "What is IPv6 address format?", options: ["128-bit hexadecimal address separated by colons", "32-bit address", "Wi-Fi password", "Printer ID"], correct: 0, hint: "128-bit hex address.", category: "IP & Networking" },
-            { q: "What is Static IP address?", options: ["Permanent IP manually configured", "IP changing every connection", "Printer-only IP", "Guest IP"], correct: 0, hint: "Fixed non-changing IP.", category: "IP & Networking" },
-            { q: "What is Dynamic IP address?", options: ["IP assigned automatically by DHCP that can change", "Government IP", "VPN IP", "Static server IP"], correct: 0, hint: "Assigned dynamically by DHCP.", category: "IP & Networking" },
-            { q: "What is Public IP address?", options: ["ISP assigned IP visible to public internet", "Local smart bulb IP", "Router password", "127.0.0.1"], correct: 0, hint: "Global internet address.", category: "IP & Networking" },
-            { q: "What is Private IP address?", options: ["IP used within local home/office network (e.g. 192.168.x.x)", "VPN hidden IP", "Government IP", "Blocked IP"], correct: 0, hint: "LAN address.", category: "IP & Networking" },
-            { q: "What does DHCP stand for?", options: ["Dynamic Host Configuration Protocol", "Data Hardware Connection Port", "Digital Home Control", "Domain Host Client"], correct: 0, hint: "Auto IP assigner.", category: "IP & Networking" },
-            { q: "What is loopback IP address (localhost)?", options: ["127.0.0.1", "192.168.0.1", "8.8.8.8", "10.0.0.1"], correct: 0, hint: "Localhost address.", category: "IP & Networking" },
-            { q: "What is Subnet Mask used for?", options: ["Divides IP address into network and host portions", "Hides IP", "Encrypts Wi-Fi", "Speeds downloads"], correct: 0, hint: "Network vs Host split.", category: "IP & Networking" },
-            { q: "Organization managing global IP address allocation?", options: ["IANA / ICANN", "Microsoft", "IEEE", "Cisco"], correct: 0, hint: "Global domain and IP authority.", category: "IP & Networking" },
-
-            { q: "How does VPN protect privacy on public Wi-Fi?", options: ["Encrypts all traffic between device and VPN server", "Turns off Wi-Fi", "Changes laptop password", "Blocks all sites"], correct: 0, hint: "Encrypted tunnel.", category: "VPN & Proxy" },
-            { q: "Difference between VPN and Proxy?", options: ["VPN encrypts all system traffic; Proxy redirects app-specific traffic without system encryption", "Proxy is always safer", "VPN only for mobile", "No difference"], correct: 0, hint: "System encryption vs app proxy.", category: "VPN & Proxy" },
-            { q: "Can VPN hide browsing activity from your ISP?", options: ["Yes, ISP only sees encrypted traffic to VPN server", "No, ISP sees everything", "Only wired connection", "Only at night"], correct: 0, hint: "Traffic is encrypted.", category: "VPN & Proxy" },
-            { q: "What is a Forward Proxy?", options: ["Proxy sitting between client and internet to forward requests", "Server protecting web servers", "Firewall", "Antivirus"], correct: 0, hint: "Client-side proxy.", category: "VPN & Proxy" },
-            { q: "What is a Reverse Proxy?", options: ["Proxy standing in front of web servers to balance incoming traffic", "IP reverser", "Backup tunnel", "Email proxy"], correct: 0, hint: "Server-side proxy.", category: "VPN & Proxy" },
-            { q: "Why use free public proxies with caution?", options: ["They may log data, inject ads, or leak information", "Destroys hardware", "Speeds up internet", "Illegal"], correct: 0, hint: "Privacy risks.", category: "VPN & Proxy" },
-            { q: "What is 'Kill Switch' in VPN software?", options: ["Blocks internet if VPN connection drops to prevent IP leak", "Turns off PC", "Removes viruses", "Reboots router"], correct: 0, hint: "Prevents data leaks.", category: "VPN & Proxy" },
-
-            { q: "In Windows Settings, what does 'System' category manage?", options: ["Display, sound, notifications, power, storage", "Bluetooth devices", "User passwords", "Date & time"], correct: 0, hint: "Core system settings.", category: "Windows Settings" },
-            { q: "Which Windows Settings category manages Bluetooth & printers?", options: ["Devices / Bluetooth & devices", "Network & internet", "Gaming", "Personalization"], correct: 0, hint: "Peripheral hardware.", category: "Windows Settings" },
-            { q: "What is configured under 'Network & internet' in Windows Settings?", options: ["Wi-Fi, Ethernet, VPN, Proxy", "Wallpapers", "Apps uninstall", "Windows Update"], correct: 0, hint: "Connectivity settings.", category: "Windows Settings" },
-            { q: "Where in Windows Settings can you change desktop wallpaper and themes?", options: ["Personalization", "Apps", "Accounts", "System"], correct: 0, hint: "Visual theme and wallpapers.", category: "Windows Settings" },
-            { q: "What is managed under 'Apps' category in Windows Settings?", options: ["Uninstall programs, default apps, optional features", "Graphics drivers", "Browsers", "Controllers"], correct: 0, hint: "Application management.", category: "Windows Settings" },
-            { q: "What can you configure under 'Accounts' in Windows Settings?", options: ["Microsoft account, PIN, passwords, sign-in options", "Bank details", "Wi-Fi login", "Email client"], correct: 0, hint: "User profile & sign-in.", category: "Windows Settings" },
-            { q: "Where do you adjust date, time zone, and language regions in Windows?", options: ["Time & language", "Gaming", "System", "Personalization"], correct: 0, hint: "Clocks and languages.", category: "Windows Settings" },
-            { q: "What features are found under 'Gaming' category in Windows Settings?", options: ["Xbox Game Bar, Game Mode, captures", "Game downloads", "Joystick repair", "Resolution"], correct: 0, hint: "Game Mode & Game Bar.", category: "Windows Settings" }
+            // Windows Settings Deep Dive (70 to 100)
+            { id: 70, q: "Windows Settings: 'System' option mein kya settings hoti hain?", options: ["Display, Sound, Notifications, Power & Battery, Storage", "Wifi, Bluetooth, Printer", "Themes, Wallpapers, Fonts", "User Passwords & Accounts"], ans: 0, hint: "System settings mein hardware performance, display aur power handling hoti hai." },
+            { id: 71, q: "Windows Settings: 'Devices' (ya Bluetooth & Devices) mein kya hota hai?", options: ["Printer, Mouse, Keyboard, Bluetooth devices connect & manage karna", "Time and Zone badalna", "Uninstall apps", "Backup settings"], ans: 0, hint: "External connected peripherals manage karne ke liye." },
+            { id: 72, q: "Windows Settings: 'Mobile Devices' (Phone Link) ka kya maqsad hai?", options: ["Android/iPhone ko PC se link karke SMS, Calls aur Photos sync karna", "Mobile recharge karna", "Mobile ki SIM block karna", "PC ko mobile banana"], ans: 0, hint: "Smartphone ko Windows PC ke saath wirelessly pairing ke liye." },
+            { id: 73, q: "Windows Settings: 'Network & Internet' mein kya manage kiya jata hai?", options: ["Wi-Fi, Ethernet, VPN, Proxy, Data Usage aur Hotspot", "Graphics resolution", "Installed games", "Language keyboards"], ans: 0, hint: "Tamam internet aur local connectivity settings." },
+            { id: 74, q: "Windows Settings: 'Personalization' kis kaam aati hai?", options: ["Background wallpaper, Lockscreen, Themes, Colors aur Fonts badalne ke liye", "Antivirus scan ke liye", "Hard drive repair ke liye", "RAM test ke liye"], ans: 0, hint: "Windows ke visual look aur feel ko custom design karne ke liye." },
+            { id: 75, q: "Windows Settings: 'Apps' section kis maqsad ke liye hota hai?", options: ["Installed software ko Uninstall, Default Apps set aur Manage karne ke liye", "New apps buy karne ke liye", "Screen record karne ke liye", "Network password ke liye"], ans: 0, hint: "Installed programs ko remove ya repair karne ke liye." },
+            { id: 76, q: "Windows Settings: 'Accounts' option mein kya control hota hai?", options: ["Microsoft Account login, Passwords, PIN, Fingerprint (Hello) aur Family users", "Only bank accounts", "Browser passwords", "Wifi saved passwords"], ans: 0, hint: "User profile, security logons aur credentials management." },
+            { id: 77, q: "Windows Settings: 'Time & Language' kis liye use hoti hai?", options: ["Date, Time zone, Region aur Keyboard input Languages set karne ke liye", "System fast karne ke liye", "Clock animation ke liye", "Voice record ke liye"], ans: 0, hint: "Waqt, mulk aur urdu/english keyboards add karne ke liye." },
+            { id: 78, q: "Windows Settings: 'Gaming' section mein kya features hote hain?", options: ["Xbox Game Bar, Game Mode, Captures aur Screen Recording settings", "Free games download", "Graphics card repair", "Overclocking CPU"], ans: 0, hint: "Game Mode windows performance ko gaming par optimize karta hai." },
+            { id: 79, q: "Windows Settings: 'Ease of Access' (Accessibility) ka kya maqsad hai?", options: ["Special needs/Disable afraad ke liye Magnifier, High Contrast, Narrator features", "File fast delete karna", "Internet speed double karna", "Easy restart karna"], ans: 0, hint: "Vision ya hearing assistance ke tools provide karta hai." },
+            { id: 80, q: "Windows Settings: 'Search' option kya manage karta hai?", options: ["Windows File indexing search permissions aur safe search filters", "Google search history", "Browser cookies", "Download files"], ans: 0, hint: "PC ke andar fast file searching indexing options." },
+            { id: 81, q: "Windows Settings: 'Privacy & Security' mein kya control hota hai?", options: ["Camera, Microphone, Location access permissions aur App Diagnostics", "Display color brightness", "Printer paper size", "Desktop shortcut size"], ans: 0, hint: "Apps ko mic, camera aur location permission allow/deny karne ke liye." },
+            { id: 82, q: "Windows Settings: 'Update & Security' (Windows Update) kyun zaroori hai?", options: ["Windows Patches, Security updates aur System Backups download karne ke liye", "Hard disk saaf karne ke liye", "Computer format karne ke liye", "Wallpaper change karne ke liye"], ans: 0, hint: "System bugs aur viruses se bachne ke liye updates zaroori hain." },
+            { id: 83, q: "Windows mein 'Device Manager' kahan se khulta hai aur kya karta hai?", options: ["Hardware Drivers manage, update aur check karne ke liye", "Games install karne ke liye", "Social media chalane ke liye", "Email parhne ke liye"], ans: 0, hint: "Tamam internal & external hardware drivers dikhata hai." },
+            { id: 84, q: "Windows 'Task Manager' kholne ki shortcut key kya hai?", options: ["Ctrl + Shift + Esc", "Alt + F4", "Ctrl + Alt + Delete", "Win + Tab"], ans: 0, hint: "Direct Task Manager kholne ke liye Ctrl + Shift + Esc." },
+            { id: 85, q: "Windows Settings mein 'Storage Sense' ka kya function hai?", options: ["Fuzool temporary files ko automatically delete karke space free karna", "Nayi Hard disk khareedna", "RAM badhana", "Files compress karna"], ans: 0, hint: "Junk and temporary cache files ko auto clean karta hai." },
+            { id: 86, q: "Windows Security (Defender) kya hai?", options: ["Built-in Antivirus aur Real-time Firewall protection software", "Paid third party software", "Browser extension", "Disk defragmenter"], ans: 0, hint: "Windows ka apna inbuilt anti-malware system." },
+            { id: 87, q: "Windows mein 'Default Apps' change karne se kya hota hai?", options: ["Specific file types (e.g. .pdf, .mp4) kholne ke liye pasandida software set hota hai", "Apps delete ho jati hain", "PC slow hota hai", "Background badalta hai"], ans: 0, hint: "Media player ya browser ko default set karna." },
+            { id: 88, q: "Windows Settings mein 'Night Light' feature kis liye hota hai?", options: ["Screen se Blue light kam karke ankhon ko mehfooz rakhne ke liye", "Night mode wallpapers ke liye", "Dark gaming mode ke liye", "Battery saver ke liye"], ans: 0, hint: "Blue light filter raat ko ankhon ki hifazat karta hai." },
+            { id: 89, q: "Windows 'Focus Assist' (Do Not Disturb) kya karta hai?", options: ["Notifications aur alerts ko temporarily block karta hai taake kaam mein khalal na pade", "Screen zoom karta hai", "Sound mute karta hai", "PC sleep mode mein bhejta hai"], ans: 0, hint: "Notifications ko suppress karta hai distraction free kaam ke liye." },
+            { id: 90, q: "Windows Settings mein 'Projecting to this PC' ka kya matlab hai?", options: ["Dusri screen ya mobile ko wirelessly PC par mirror display karna", "Projector light control karna", "3D designs banana", "Movies render karna"], ans: 0, hint: "Miracast technology ke zariye wireless display screen share." },
+            { id: 91, q: "Windows Settings: 'Power & Sleep' options kis kaam aate hain?", options: ["PC inoperative hone par Screen off hone aur Sleep mode mein jane ka time set karna", "Processor overclock karna", "Shutdown fast karna", "Voltage control karna"], ans: 0, hint: "Bijli aur battery bachat ke liye timeout settings." },
+            { id: 92, q: "Windows mein 'Virtual Desktop' feature kya karta hai?", options: ["Ek se ziada alag alag clean Desktop Workspaces banane ki saholat deta hai", "Cloud PC buy karta hai", "Game graphic improve karta hai", "VPN connect karta hai"], ans: 0, hint: "Win + Tab se multiple desktop screens create ki ja sakti hain." },
+            { id: 93, q: "Windows Settings mein 'Check for Updates' par click karne se kya hota hai?", options: ["Microsoft servers se latest security patches aur feature updates search hoti hain", "PC format ho jata hai", "Drivers corrupt ho jate hain", "Files delete ho jati hain"], ans: 0, hint: "Online new updates download check karna." },
+            { id: 94, q: "Windows Settings: 'Startup Apps' tab ka kya function hai?", options: ["Windows turn on hote hi automatically start hone wali apps ko Control/Disable karna", "New apps start karna", "Game boot fast karna", "Restart process view karna"], ans: 0, hint: "Background startup apps disable karne se PC fast boot hota hai." },
+            { id: 95, q: "Windows Settings: 'Troubleshoot' option kis kaam aata hai?", options: ["Network, Sound ya Hardware masail ko automatically detect aur fix karna", "Virus scan karna", "Files recover karna", "Password reset karna"], ans: 0, hint: "Windows ka automated system problem solver tool." },
+            { id: 96, q: "Windows 'User Account Control' (UAC) prompt kya hota hai?", options: ["Jab koi software system changes kare to Admin Permission popup dikhana", "User switch karna", "Password change dialog", "Lock screen notification"], ans: 0, hint: "Do you want to allow this app to make changes popup." },
+            { id: 97, q: "Windows Settings: 'Clipboard History' (Win + V) feature kya hai?", options: ["Ek se ziada copy kiye hue items ko history mein save rakhna aur paste karna", "Only text clear karna", "Word document view karna", "Browser history search"], ans: 0, hint: "Win+V dabane se purani copy kiye text ki history khulti hai." },
+            { id: 98, q: "Windows Settings: 'Delivery Optimization' kya karti hai?", options: ["Windows updates ko local network PCs ke sath share karke bandwidth bachati hai", "Courier deliver manage karti hai", "Online shopping track karti hai", "Email speed fast karti hai"], ans: 0, hint: "Peer-to-peer Windows update distribution system." },
+            { id: 99, q: "Windows Settings: 'Recovery' section mein 'Reset this PC' kya karta hai?", options: ["Windows ko fresh install karna (files rakh kar ya sub kuch format karke)", "Computer restart karna", "System undo karna", "Password delete karna"], ans: 0, hint: "Factory reset functionality for Windows OS." },
+            { id: 100, q: "Windows Settings: 'Sign-in Options' mein kya features milte hain?", options: ["Windows Hello Face, Fingerprint, PIN, Security Key aur Password configuration", "Website login passwords", "Social media logins", "Wifi WPA2 keys"], ans: 0, hint: "Biometric aur Security credentials setup for logging into PC." }
         ];
 
-        let questions = [];
-        let currentQuestion = 0;
-        let userAnswers = [];
+        /* ----------------------------------------------------
+           2. STATE MANAGEMENT VARIABLES
+           ---------------------------------------------------- */
+        let currentQuestionIndex = 0;
+        let studentAnswers = new Array(100).fill(null);
+        let flaggedQuestions = new Array(100).fill(false);
         let studentName = "";
         let timerInterval = null;
-        let timeLeft = 100 * 60;
+        let timeRemainingSeconds = 100 * 60; // 100 minutes = 6000 seconds
         let warningCount = 0;
         const maxWarnings = 3;
+        let isExamActive = false;
 
-        // Shuffle Array (Fisher-Yates Algorithm)
-        function shuffleArray(array) {
-            let arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        // Prepare unique shuffled questions & options for this student
-        function prepareShuffledQuestions() {
-            let shuffledQ = shuffleArray(rawQuestions);
-            
-            return shuffledQ.map(qObj => {
-                const correctOptionText = qObj.options[qObj.correct];
-                const shuffledOpts = shuffleArray(qObj.options);
-                const newCorrectIdx = shuffledOpts.indexOf(correctOptionText);
-
-                return {
-                    q: qObj.q,
-                    options: shuffledOpts,
-                    correct: newCorrectIdx,
-                    hint: qObj.hint,
-                    category: qObj.category
-                };
-            });
-        }
-
-        // Anti-Cheating Protection
-        window.addEventListener('blur', () => {
-            if (document.getElementById('exam-screen').classList.contains('hidden')) return;
-            warningCount++;
-            if (warningCount >= maxWarnings) {
-                alert("Security Alert: Excessive window switching! Exam auto-submitting.");
-                submitExam();
-            } else {
-                alert(`WARNING (${warningCount}/${maxWarnings}): Switching tabs or leaving exam window is strictly prohibited!`);
-            }
-        });
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden && !document.getElementById('exam-screen').classList.contains('hidden')) {
-                warningCount++;
-                if (warningCount >= maxWarnings) {
-                    alert("Security Alert: Tab switching limit reached! Auto-submitting.");
-                    submitExam();
-                } else {
-                    alert(`WARNING (${warningCount}/${maxWarnings}): Do not leave the exam tab!`);
-                }
-            }
-        });
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        function startExam(e) {
-            if (e) e.preventDefault();
-            
+        /* ----------------------------------------------------
+           3. EXAM INITIATION & ANTI-CHEATING HOOKS
+           ---------------------------------------------------- */
+        function startExam() {
             const nameInput = document.getElementById('student-name').value.trim();
             if (!nameInput) {
-                alert("Please enter your full name first!");
+                alert("Meherbani karke apna mukammal naam dakhil karein.");
                 return;
             }
+
             studentName = nameInput;
+            document.getElementById('student-name-badge').innerText = studentName;
 
-            // Generate Randomized Question Paper for this specific student session
-            questions = prepareShuffledQuestions();
-            userAnswers = new Array(questions.length).fill(null);
+            // Request Fullscreen Mode
+            enterFullScreen();
 
-            // Attempt Fullscreen gracefully
-            try {
-                const elem = document.documentElement;
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen().catch(() => {});
-                }
-            } catch(err) {}
-
-            // Switch Screen Views
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('exam-screen').classList.remove('hidden');
+            // Hide Registration, Show Header Timer & Exam Dashboard
+            document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('header-timer-box').classList.remove('hidden');
-            document.getElementById('header-timer-box').classList.add('flex');
-            document.getElementById('display-student-name').innerText = studentName;
+            document.getElementById('exam-screen').classList.remove('hidden');
 
-            buildQuestionGrid();
+            isExamActive = true;
+
+            // Generate Nav Grid
+            renderQuestionGrid();
+
+            // Load First Question
             loadQuestion(0);
+
+            // Start Countdown Timer
             startTimer();
+
+            // Attach Anti-Cheating Event Listeners
+            attachAntiCheatingEvents();
         }
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                let minutes = Math.floor(timeLeft / 60);
-                let seconds = timeLeft % 60;
-                document.getElementById('timer-display').innerText = 
-                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        function enterFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => console.log("Fullscreen request denied"));
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
 
-                if (timeLeft <= 0) {
+        /* ----------------------------------------------------
+           4. TIMER & COUNTDOWN LOGIC
+           ---------------------------------------------------- */
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemainingSeconds--;
+                updateTimerDisplay();
+
+                if (timeRemainingSeconds <= 0) {
                     clearInterval(timerInterval);
-                    alert("Time expired! Your exam will now be submitted.");
-                    submitExam();
+                    alert("Aapka waqt khatam ho chuka hai! Exam automatically submit ho raha hai.");
+                    finalSubmitExam(true);
                 }
             }, 1000);
         }
 
-        function buildQuestionGrid() {
-            const grid = document.getElementById('question-grid');
-            grid.innerHTML = '';
-            questions.forEach((_, index) => {
-                const btn = document.createElement('button');
-                btn.id = `grid-btn-${index}`;
-                btn.innerText = index + 1;
-                btn.className = `w-8 h-8 rounded text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition`;
-                btn.onclick = () => goToQuestion(index);
-                grid.appendChild(btn);
-            });
-            updateGridState();
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeRemainingSeconds / 3600);
+            const minutes = Math.floor((timeRemainingSeconds % 3600) / 60);
+            const seconds = timeRemainingSeconds % 60;
+
+            const formatted = 
+                String(hours).padStart(2, '0') + ":" +
+                String(minutes).padStart(2, '0') + ":" +
+                String(seconds).padStart(2, '0');
+
+            document.getElementById('timer-display').innerText = formatted;
         }
 
-        function updateGridState() {
-            questions.forEach((_, index) => {
-                const btn = document.getElementById(`grid-btn-${index}`);
-                if (!btn) return;
-                if (index === currentQuestion) {
-                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-indigo-600 text-white ring-2 ring-indigo-400`;
-                } else if (userAnswers[index] !== null) {
-                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-emerald-600 text-white`;
-                } else {
-                    btn.className = `w-8 h-8 rounded text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600`;
-                }
-            });
-        }
-
+        /* ----------------------------------------------------
+           5. QUESTION DISPLAY & NAVIGATION LOGIC
+           ---------------------------------------------------- */
         function loadQuestion(index) {
-            currentQuestion = index;
-            const q = questions[index];
+            currentQuestionIndex = index;
+            const qData = questionsData[index];
 
-            document.getElementById('question-progress').innerText = `${index + 1} / ${questions.length}`;
-            document.getElementById('question-badge').innerText = q.category;
-            document.getElementById('question-title').innerText = `${index + 1}. ${q.q}`;
-            document.getElementById('hint-text').innerText = q.hint;
-            document.getElementById('hint-box').classList.add('hidden');
+            // Update Headers
+            document.getElementById('q-current-num').innerText = index + 1;
 
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-
-            q.options.forEach((opt, optIndex) => {
-                const isSelected = userAnswers[index] === optIndex;
-                const div = document.createElement('div');
-                div.className = `p-4 rounded-xl border cursor-pointer transition flex items-center space-x-3 ${
-                    isSelected 
-                        ? 'bg-indigo-600/20 border-indigo-500 text-white' 
-                        : 'bg-slate-900/50 border-slate-700 text-slate-300 hover:bg-slate-700/50'
-                }`;
-                div.onclick = () => selectOption(optIndex);
-
-                div.innerHTML = `
-                    <div class="w-5 h-5 rounded-full border ${isSelected ? 'border-indigo-400 bg-indigo-500' : 'border-slate-500'} flex items-center justify-center text-xs font-bold text-white">
-                        ${isSelected ? '✓' : ''}
-                    </div>
-                    <span class="text-sm font-medium">${opt}</span>
-                `;
-                optionsContainer.appendChild(div);
-            });
-
-            document.getElementById('prev-btn').disabled = index === 0;
-            if (index === questions.length - 1) {
-                document.getElementById('next-btn').classList.add('hidden');
-                document.getElementById('submit-btn').classList.remove('hidden');
+            // Flag status badge
+            if (flaggedQuestions[index]) {
+                document.getElementById('flag-badge').classList.remove('hidden');
+                document.getElementById('flag-btn-text').innerText = "Unflag Question";
             } else {
-                document.getElementById('next-btn').classList.remove('hidden');
-                document.getElementById('submit-btn').classList.add('hidden');
+                document.getElementById('flag-badge').classList.add('hidden');
+                document.getElementById('flag-btn-text').innerText = "Flag for Review";
             }
 
-            updateGridState();
+            // Question Text
+            document.getElementById('question-text').innerText = `Q${index + 1}: ${qData.q}`;
+
+            // Render Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+
+            qData.options.forEach((optText, optIdx) => {
+                const isSelected = studentAnswers[index] === optIdx;
+                const optionCard = document.createElement('div');
+                optionCard.className = `p-4 rounded-xl border cursor-pointer transition flex items-center justify-between ${
+                    isSelected 
+                    ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-md' 
+                    : 'bg-slate-900/60 border-slate-700/80 hover:bg-slate-700/40 text-slate-200'
+                }`;
+                optionCard.onclick = () => selectOption(index, optIdx);
+
+                optionCard.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold ${
+                            isSelected ? 'border-indigo-400 bg-indigo-600 text-white' : 'border-slate-500 text-slate-400'
+                        }">
+                            ${String.fromCharCode(65 + optIdx)}
+                        </div>
+                        <span class="text-sm font-medium leading-normal">${optText}</span>
+                    </div>
+                    <div class="w-4 h-4 rounded-full border flex items-center justify-center ${
+                        isSelected ? 'border-indigo-400 bg-indigo-500' : 'border-slate-600'
+                    }">
+                        ${isSelected ? '<div class="w-1.5 h-1.5 rounded-full bg-white"></div>' : ''}
+                    </div>
+                `;
+                container.appendChild(optionCard);
+            });
+
+            // Set Hint Content & reset toggle
+            document.getElementById('hint-text').innerText = qData.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('hint-icon').classList.remove('rotate-180');
+
+            // Disable/Enable Prev/Next buttons
+            document.getElementById('prev-btn').disabled = (index === 0);
+            
+            // Highlight active button in sidebar grid
+            updateGridHighlight();
         }
 
-        function selectOption(optIndex) {
-            userAnswers[currentQuestion] = optIndex;
-            loadQuestion(currentQuestion);
+        function selectOption(qIdx, optionIdx) {
+            studentAnswers[qIdx] = optionIdx;
+            loadQuestion(qIdx);
+            renderQuestionGrid();
+        }
+
+        function navigateQuestion(direction) {
+            const target = currentQuestionIndex + direction;
+            if (target >= 0 && target < 100) {
+                loadQuestion(target);
+            }
+        }
+
+        function toggleFlag() {
+            flaggedQuestions[currentQuestionIndex] = !flaggedQuestions[currentQuestionIndex];
+            loadQuestion(currentQuestionIndex);
+            renderQuestionGrid();
         }
 
         function toggleHint() {
-            document.getElementById('hint-box').classList.toggle('hidden');
+            const hintBox = document.getElementById('hint-box');
+            const hintIcon = document.getElementById('hint-icon');
+            hintBox.classList.toggle('hidden');
+            hintIcon.classList.toggle('rotate-180');
         }
 
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                loadQuestion(currentQuestion + 1);
-            }
-        }
+        /* ----------------------------------------------------
+           6. QUESTION NAVIGATION SIDEBAR GRID
+           ---------------------------------------------------- */
+        function renderQuestionGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = "";
 
-        function prevQuestion() {
-            if (currentQuestion > 0) {
-                loadQuestion(currentQuestion - 1);
-            }
-        }
+            let answeredCounter = 0;
 
-        function goToQuestion(index) {
-            loadQuestion(index);
-        }
+            for (let i = 0; i < 100; i++) {
+                const isAnswered = studentAnswers[i] !== null;
+                const isFlagged = flaggedQuestions[i];
+                const isCurrent = i === currentQuestionIndex;
 
-        function confirmSubmit() {
-            const answeredCount = userAnswers.filter(a => a !== null).length;
-            const unanswered = questions.length - answeredCount;
-            if (unanswered > 0) {
-                if (!confirm(`You have ${unanswered} unanswered questions. Submit anyway?`)) {
-                    return;
-                }
-            } else {
-                if (!confirm("Are you sure you want to submit your exam?")) return;
-            }
-            submitExam();
-        }
+                if (isAnswered) answeredCounter++;
 
-        function submitExam() {
-            clearInterval(timerInterval);
-            if (document.fullscreenElement) {
-                document.exitFullscreen().catch(() => {});
+                let bgClass = "bg-slate-700/60 text-slate-300 hover:bg-slate-600";
+                if (isAnswered) bgClass = "bg-emerald-600 text-white font-bold";
+                if (isFlagged) bgClass = "bg-amber-500 text-slate-950 font-bold";
+                if (isCurrent) bgClass += " ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-800";
+
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.onclick = () => loadQuestion(i);
+                btn.className = `h-9 w-full rounded-lg text-xs font-semibold transition flex items-center justify-center relative ${bgClass}`;
+                btn.innerText = i + 1;
+
+                gridContainer.appendChild(btn);
             }
 
-            let score = 0;
-            questions.forEach((q, idx) => {
-                if (userAnswers[idx] === q.correct) {
-                    score++;
+            document.getElementById('answered-count-num').innerText = answeredCounter;
+        }
+
+        function updateGridHighlight() {
+            renderQuestionGrid();
+        }
+
+        /* ----------------------------------------------------
+           7. ANTI-CHEATING PROCTORING SYSTEM
+           ---------------------------------------------------- */
+        function attachAntiCheatingEvents() {
+            // Disable Right Click Menu
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Disable Copy, Cut, Paste
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('cut', e => e.preventDefault());
+            document.addEventListener('paste', e => e.preventDefault());
+
+            // Disable Inspect Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+            document.addEventListener('keydown', e => {
+                if (
+                    e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+                    (e.ctrlKey && e.keyCode === 85)
+                ) {
+                    e.preventDefault();
+                    triggerViolation("DevTools / Inspect Element shortcuts use karne ki ijazat nahi hai!");
                 }
             });
 
-            const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 70;
+            // Detect Visibility Change (Tab Switch)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && isExamActive) {
+                    triggerViolation("Aap ne browser tab switch kiya!");
+                }
+            });
 
-            document.getElementById('exam-screen').classList.add('hidden');
+            // Detect Window Blur (Focus lost / minimize)
+            window.addEventListener('blur', () => {
+                if (isExamActive) {
+                    triggerViolation("Window focus khatam hua ya app switch ki gayi!");
+                }
+            });
+        }
+
+        function triggerViolation(reason) {
+            if (!isExamActive) return;
+
+            warningCount++;
+            document.getElementById('warning-count-text').innerText = `${warningCount} / ${maxWarnings}`;
+            document.getElementById('warn-strike-num').innerText = warningCount;
+            document.getElementById('warning-modal-text').innerText = `${reason} Anti-cheating rule ke mutabiq yeh ghalat hai.`;
+
+            if (warningCount >= maxWarnings) {
+                isExamActive = false;
+                clearInterval(timerInterval);
+                alert("Shat-daer Warning Limits Exceeded! Multiple anti-cheating violations ki wajah se aapka exam auto-submit ho raha hai.");
+                closeWarningModal();
+                finalSubmitExam(true);
+            } else {
+                document.getElementById('warning-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeWarningModal() {
+            document.getElementById('warning-modal').classList.add('hidden');
+            enterFullScreen();
+        }
+
+        /* ----------------------------------------------------
+           8. EXAM SUBMISSION & SCORING
+           ---------------------------------------------------- */
+        function confirmSubmission() {
+            let answeredCount = 0;
+            studentAnswers.forEach(ans => { if (ans !== null) answeredCount++; });
+
+            document.getElementById('modal-answered-num').innerText = answeredCount;
+            document.getElementById('modal-unanswered-num').innerText = 100 - answeredCount;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function finalSubmitExam(forced = false) {
+            isExamActive = false;
+            clearInterval(timerInterval);
+            closeConfirmModal();
+
+            // Calculate Score
+            let correctScore = 0;
+            questionsData.forEach((q, idx) => {
+                if (studentAnswers[idx] === q.ans) {
+                    correctScore++;
+                }
+            });
+
+            const percentage = ((correctScore / 100) * 100).toFixed(1);
+            const isPassed = correctScore >= 70; // 70% passing threshold
+
+            // Time Taken Calculation
+            const secondsSpent = (100 * 60) - timeRemainingSeconds;
+            const minutesSpent = Math.floor(secondsSpent / 60);
+
+            // Hide Exam Screen, Show Result Screen
             document.getElementById('header-timer-box').classList.add('hidden');
+            document.getElementById('exam-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
 
-            document.getElementById('score-display').innerText = `${score} / ${questions.length}`;
-            document.getElementById('percentage-display').innerText = `${percentage}%`;
+            // Populate Result Summary Data
+            document.getElementById('student-result-name').innerText = `Student Name: ${studentName}`;
+            document.getElementById('result-time-taken').innerText = `Completed in: ${minutesSpent} Mins ${secondsSpent % 60} Secs`;
+            document.getElementById('res-score').innerText = `${correctScore} / 100`;
+            document.getElementById('res-percentage').innerText = `${percentage}%`;
+            document.getElementById('res-correct').innerText = correctScore;
 
-            const badge = document.getElementById('pass-fail-badge');
-            const icon = document.getElementById('result-icon');
-            const heading = document.getElementById('result-heading');
-            const subtext = document.getElementById('result-subtext');
+            const statusBadge = document.getElementById('res-status');
+            const iconContainer = document.getElementById('result-icon-container');
 
-            if (passed) {
-                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-lg mb-8 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                badge.innerText = "Status: PASSED 🎓";
-                icon.innerText = "🏆";
-                icon.className = "w-20 h-20 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6 text-3xl";
-                heading.innerText = `Congratulations, ${studentName}!`;
-                subtext.innerText = "You successfully passed with 70% or higher!";
+            if (isPassed) {
+                statusBadge.innerText = "PASSED";
+                statusBadge.className = "inline-block px-4 py-1.5 text-xs font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                iconContainer.className = "inline-flex p-4 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                iconContainer.innerHTML = '<i class="fa-solid fa-trophy text-4xl"></i>';
             } else {
-                badge.className = "inline-block px-6 py-2 rounded-full font-bold text-lg mb-8 bg-red-500/20 text-red-400 border border-red-500/30";
-                badge.innerText = "Status: FAILED ❌";
-                icon.innerText = "⚠️";
-                icon.className = "w-20 h-20 mx-auto rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mb-6 text-3xl";
-                heading.innerText = `Keep Practicing, ${studentName}.`;
-                subtext.innerText = "You scored below 70%. Please review your concepts and try again.";
+                statusBadge.innerText = "FAILED";
+                statusBadge.className = "inline-block px-4 py-1.5 text-xs font-bold rounded-full bg-red-500/20 text-red-400 border border-red-500/30";
+                iconContainer.className = "inline-flex p-4 rounded-full bg-red-500/10 text-red-400 border border-red-500/20";
+                iconContainer.innerHTML = '<i class="fa-solid fa-circle-xmark text-4xl"></i>';
             }
+
+            // Build Detailed Question Review Section
+            renderDetailedReview();
+        }
+
+        /* ----------------------------------------------------
+           9. DETAILED Q&A REVIEW ACCORDION
+           ---------------------------------------------------- */
+        function renderDetailedReview() {
+            const container = document.getElementById('review-container');
+            container.innerHTML = "";
+
+            questionsData.forEach((q, idx) => {
+                const userAns = studentAnswers[idx];
+                const isCorrect = userAns === q.ans;
+
+                const reviewCard = document.createElement('div');
+                reviewCard.className = `p-4 rounded-xl border text-xs sm:text-sm space-y-2 ${
+                    isCorrect ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-red-950/20 border-red-500/30'
+                }`;
+
+                const userChoiceText = userAns !== null ? q.options[userAns] : "Not Answered (Skipped)";
+                const correctChoiceText = q.options[q.ans];
+
+                reviewCard.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-slate-200">Q${idx + 1}: ${q.q}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            isCorrect ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                        }">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                        <div>
+                            <span class="text-slate-400">Aapka Jawab:</span>
+                            <p class="font-semibold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">${userChoiceText}</p>
+                        </div>
+                        <div>
+                            <span class="text-slate-400">Sahi Jawab:</span>
+                            <p class="font-semibold text-emerald-400">${correctChoiceText}</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700/60 text-[11px] text-slate-300 mt-2">
+                        <strong class="text-amber-400">Hint / Reason:</strong> ${q.hint}
+                    </div>
+                `;
+
+                container.appendChild(reviewCard);
+            });
         }
     </script>
 </body>
